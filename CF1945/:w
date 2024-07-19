@@ -1,0 +1,87 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long;
+#define pb push_back
+template <typename T>
+using Vec = vector<T>;
+using pl = pair<ll, ll>;
+void solve();
+int main() {
+  cin.tie(nullptr)->sync_with_stdio(false);
+  ll t; 
+  cin >> t; 
+  while (t--) solve();
+}
+
+void solve() {
+  ll n, k;
+  cin >> n >> k;
+  ll a[n+2];
+  ll b[n + 2];
+  ll M = (n+2)/2;
+  ll pos = -1;
+  Vec<ll> gp,sp;
+  bool sorted = true;
+  for (ll i = 1; i <= n; i++) {
+    cin >> a[i];
+    b[i] = a[i] > k;
+    if (a[i] == k) pos = i;
+    if (a[i] > k) gp.pb(i);
+    if (a[i] < k) sp.pb(i);
+  }
+  for (ll i = 2; i <= n; i++) {
+    if (b[i] >= b[i-1]) {
+
+    } else {
+      sorted = false;
+    }
+  }
+  Vec<pl> res;
+  ll npos;
+  if(sorted) {
+    //swap(a[pos], a[sp[sp.size()]]);
+    cout << 1 << "\n";
+    cout << pos << " " << sp.size() + 1 << "\n";
+    return;
+  }
+  if (a[M] == k) {
+    if (!gp.empty() && gp.back() > M) {
+      swap(a[M], a[gp.back()]);
+      res.pb({pos, npos});
+      npos = gp.back();
+    }
+    else if (!sp.empty() && sp[0] < M) {
+      swap(a[M], a[sp[0]]);
+      npos = sp[0];
+      res.pb({pos, npos});
+    }
+  }
+  if (a[M] > k) {
+    if (pos < M) {
+    } else {
+      swap(a[1], a[pos]);
+    }
+  }
+  cout <<res.size() <<"\n";
+  ll l = 1, r = n + 1;
+  bool llast = true;
+  while (r-l>1) {
+    ll mid = (l + r) / 2;
+    if (a[mid] <= k) {
+      l = mid;
+      llast = true;
+    } else {
+      r = mid;
+      llast = false;
+    }
+  }
+  if (true ) {
+    res.pb({npos, l});
+  } else {
+    res.pb({npos, r});
+  }
+  cout << res.size() << "\n";
+  for (auto& [u, v] : res) {
+    cout << u << " " << v << "\n";
+  }
+}
