@@ -1,6 +1,6 @@
 # Variables
 CXX = g++
-CXXFLAGS = -std=c++20 -Wall
+CXXFLAGS = -g -std=c++20 -Wall
 
 # Targets
 all:
