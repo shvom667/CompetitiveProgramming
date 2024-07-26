@@ -2,62 +2,61 @@
 #define int long long
 
 using namespace std;
-int merge(vector<int> &arr, int low, int mid, int high) {
-    vector<int> temp; // temporary array
-    int left = low;      // starting index of left half of arr
-    int right = mid + 1;   // starting index of right half of arr
 
-    //Modification 1: cnt variable to count the pairs:
-    int cnt = 0;
-
-    //storing elements in the temporary array in a sorted manner//
-
-    while (left <= mid && right <= high) {
-        if (arr[left] <= arr[right]) {
-            temp.push_back(arr[left]);
-            left++;
+long long combine(vector<int>&a, int low, int high) {
+    long long fans = 0;
+    int mid = low + (high - low) / 2;
+    
+    for (int i = high, p = mid+1; i >= mid+1; i--) {
+        while (p - 1 >= low && a[p-1] >= a[i]) {
+            p--;
         }
-        else {
-            temp.push_back(arr[right]);
-            cnt += (mid - left + 1); //Modification 2
-            right++;
+        fans+=mid+1-p;
+    }
+
+    vector<int> temp;
+    
+    if (true) {
+        int f = low, F = mid, s = mid+1, S = high;
+        while (f <= F && s <= S) {
+            if (a[f] < a[s]) {
+                temp.push_back(a[f]);
+                f++;
+            }else{
+                temp.push_back(a[s]);
+                s++;
+            }
+        } 
+        while (f <= F) {
+            temp.push_back(a[f]);
+            f++;
+        }
+        while (s <= S) {
+            temp.push_back(a[s]);
+            s++;
         }
     }
-
-    // if elements on the left half are still left //
-
-    while (left <= mid) {
-        temp.push_back(arr[left]);
-        left++;
+   
+    for(int i=low;i<=high;i++){
+        a[i] = temp[i-low];
     }
 
-    //  if elements on the right half are still left //
-    while (right <= high) {
-        temp.push_back(arr[right]);
-        right++;
-    }
-
-    // transfering all elements from temporary to arr //
-    for (int i = low; i <= high; i++) {
-        arr[i] = temp[i - low];
-    }
-
-    return cnt; // Modification 3
+    return fans;
 }
 
-int mergeSort(vector<int> &arr, int low, int high) {
-    int cnt = 0;
-    if (low >= high) return cnt;
-    int mid = (low + high) / 2 ;
-    cnt += mergeSort(arr, low, mid);  // left half
-    cnt += mergeSort(arr, mid + 1, high); // right half
-    cnt += merge(arr, low, mid, high);  // merging sorted halves
-    return cnt;
+long long mergeSort(vector<int>&a, int low, int high) {
+    if (low >= high) {
+        return 0ll;
+    }
+    long long fans=0;
+    int mid = low + (high - low) / 2;
+    fans+=mergeSort(a, low, mid);
+    fans+=mergeSort(a, mid+1, high);
+    fans+=combine(a,low,high);
+    return fans;
 }
 
-int numberOfInversions(vector<int>&a, int n) {
-
-    // Count the number of pairs:
+long long numberOfInversions(vector<int>&a, int n) {
     return mergeSort(a, 0, n - 1);
 }
 
@@ -77,8 +76,6 @@ void solve() {
     long long ca = numberOfInversions(a, n);
     long long cb = numberOfInversions(b, n);
 
-    // cout << ca << " " << cb << "\n";
-
     sort(begin(a), end(a));
     sort(begin(b) ,end(b));
     if (a != b) {
@@ -95,6 +92,7 @@ void solve() {
 
 
 signed main() {
+    
     int t;
     cin >> t;
     while (t--) {
