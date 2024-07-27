@@ -1,4 +1,5 @@
 #define FAST_IO
+#define ONLINE_JUDGE
 // ============
 
 #include <bits/stdc++.h>
@@ -708,42 +709,89 @@ const string nl = "\n";
 using pl = pair<ll, ll>;
 
 // ============
-
+ll ub(ll x, ll y) {return (x+y-1)/y;}
 void solve() {
-    ll n, k;
+    ll n,k;
     cin >> n >> k;
     Vec<ll> a(n), b(n);
-    for (ll i = 0; i < n; i++){
-        cin >> a[i];
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
     }
-    for (ll i = 0; i < n; i++){
-        cin >> b[i];
+    for(ll i=0;i<n;i++){
+        cin>>b[i];
     }
-    priority_queue<pl> pq;
-    pq.push(make_pair(0,0));
-    for (ll i = 0; i < n; i++){
-        pq.push(make_pair(a[i],b[i]));
-    }
-    ll fans = 0;
-    while (!pq.empty()) {
-        if (k == 0) break;
-        pl t1 = pq.top();
-        pq.pop();
-        if (t1.first == 0) continue;
-        pl t2 = pq.top();
-        ll maxK = (t1.first - t2.first) / t1.second;
+    ll l = 0, r = 1e9;
+    ll bv=0;
+    auto cond = [&](int mid) {
+        bool ok=true;
 
-        ll takeK = min(k, maxK+1);
-        k -= takeK;
+        ll cv=0, ck=0, ce=0;
+        for(int i=0;i<n;i++){
+            if (a[i] <= mid) continue;
+            ck += ub(a[i]-mid,b[i]);
+            ll cc = ub(a[i]-mid,b[i]);;
+            cv += a[i] * (cc + 1) - b[i] * ((cc * (cc + 1)))/2;
+        }
+        for (int i = 0; i < n; i++) {
+            if (a[i] < mid) {
+                continue;
+            }
+            if ((a[i]-mid)%b[i]==0){
+                ce++;
+            }
+        }
 
-        fans += t1.first * (takeK) - ((takeK * (takeK-1))/2) * t1.second;
+        if (ck > k) {
+            ok = false;
+        }
         
-        t1.first = t1.first - (takeK) * t1.second;
-        if (t1.first > 0) {
-            pq.push(t1);
+        cv += min(k - ck, ce)*mid;
+        ck += min(k-ck, ce);
+
+        return ck;
+    };
+    while (l <= r) {
+        ll mid = (l + (r-l)/2);
+        
+        ll res = cond(mid);
+        dbg(mid, res);
+        
+        
+        if (res < k){
+            r = mid-1;
+        }else{
+            l = mid+1;
         }
     }
-    cout << fans << "\n";
+    
+    auto get_ans = [&](ll r) {
+        ll cv=0, ck=0, ce=0;
+        for(int i=0;i<n;i++){
+            if (a[i] <= r) continue;
+            ck += ub(a[i]-r,b[i]);
+            ll cc = ub(a[i]-r,b[i]);;
+            cv += a[i] * (cc) - b[i] * ((cc * (cc - 1)))/2;
+        }
+        if (ck > k) {
+            return -1ll;
+        }
+        dbg(cv);
+        for (int i = 0; i < n; i++) {
+            if (a[i] < r) {
+                continue;
+            }
+            if ((a[i]-r)%b[i]==0){
+                ce++;
+            }
+        }
+        dbg(ce);
+        dbg(ck);
+        dbg(ce);
+        cv += min(k - ck, ce)*r;
+        return cv;
+    };
+    // dbg(r);
+    cout << max({get_ans(r), get_ans(r+1), get_ans(r+2), get_ans(r-1)}) << '\n';
 }
 
 signed main() {
