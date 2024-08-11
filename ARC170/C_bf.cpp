@@ -710,30 +710,122 @@ using pl = pair<ll, ll>;
 
 // ============
 
-void solve() {
-    Mint fans=0;
-    Mint M = 2;
-    Vec<ll> cnt = {2};
-    for(ll l=1; l<=2; l++){
-        ll nlp=l;
-        Mint v = M;
-        for (ll i=0;i>=0;i--){
-            fans+=v.pow(cnt[i]);
-            dbg(fans);
-            v-=1;
+vector<int> gm(vector<int> v){
+    ll n = v.size();
+    Vec<ll> f = v;
+    set<ll> s;
+    for (ll i = 0; i < n; i++) {
+        s.insert(v[i]);
+        for(int j = 0; j <= n; j++) {
+            if (s.find(j) != s.end()) continue;
+            f[i] = j;
+            break;
         }
-
-        dbg(l, fans);
     }
-    cout << fans << '\n';
+    return f;
+}
+
+bool match(Vec<ll> a, Vec<ll> in) {
+    ll n = a.size();
+    Vec<ll> ma = gm(a);
+    bool ok=true;
+    
+    if (in[0] == 0){
+        if (a[0]==0){
+            ok=false;
+        }
+    }
+    if (in[0] == 1){
+        if (a[0]!=0){
+            ok=false;
+        }
+    }
+
+    for (int i = 1; i < n; i++) {
+        if (in[i] == 1) {
+            if (a[i] == ma[i-1]){
+                // ok=true;
+            }else{
+                ok=false;
+            }
+        } else {
+            if (a[i]==ma[i-1]){
+                ok=false;
+            }
+        }
+    }
+
+    return ok;
+}
+
+void dfs(vector<vector<int>>& a, vector<int> v, int i, int n, int K) {
+    if (i == n) {
+        a.pb(v);
+        return;
+    }
+
+    for (int val = 0; val <= K; val++) {
+        v.pb(val);
+        dfs(a,v, i+1, n, K);
+        v.pop_back();
+    }
+}
+
+
+void solve() {
+    
 }
 
 signed main() {
+    // dbg(gm({1, 2, 3, 0, 6, 5, 4}));
+    // Vec<ll> in1 = {0, 0, 1, 0, 0, 0, 1, 0};
+    // dbg(match({0,2,0,2}, {1,0,0,1}));
+    // return 0;
 
-    i32 t;
-    t = 1;
-    while (t--) {
-        solve();
+
+    ll K = 3 ;
+    ll n = 6;
+    Vec<ll> in = {1, 0, 0, 1, 0, 1 };
+    
+    Vec<Vec<ll>> res;
+    dfs(res,{}, 0, n, K);
+
+
+
+    dbg(res.size());
+
+    Vec<Vec<ll>> fres;
+
+    for(auto&vec:res){
+        if (match(vec, in)) {
+            fres.pb(vec);
+        }
     }
+
+    dbg(fres.size());
+
+    ll pr; cin >> pr;
+    if (pr == 1) {
+        for(auto&vec:fres){
+            dbg(vec);
+        }
+    }
+
+
+
+    // if (true) {
+    //     Mint v = 1000000000;
+    //     cout << v.pow(7) << '\n';
+    // }
+
+
+    return 0;
 }
 
+
+/*
+
+Observations:
+    - if k >= n ans = k.pow(c0)
+    - 
+*/

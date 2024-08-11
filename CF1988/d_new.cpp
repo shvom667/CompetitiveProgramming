@@ -1,4 +1,3 @@
-
 #define FAST_IO
 // ============
 
@@ -405,7 +404,7 @@ class FactorialTable {
     }
 };
 
-using Mint = ModInt<mod998244353>;
+using Mint = ModInt<mod1000000007>;
 // ============
 
 struct DSU {
@@ -711,29 +710,83 @@ using pl = pair<ll, ll>;
 // ============
 
 void solve() {
-    Mint fans=0;
-    Mint M = 2;
-    Vec<ll> cnt = {2};
-    for(ll l=1; l<=2; l++){
-        ll nlp=l;
-        Mint v = M;
-        for (ll i=0;i>=0;i--){
-            fans+=v.pow(cnt[i]);
-            dbg(fans);
-            v-=1;
-        }
-
-        dbg(l, fans);
+    ll n;
+    cin >> n;
+    Vec<ll> a(n + 1);
+    for (ll i = 1; i <= n; i++) {
+        cin >> a[i];
     }
-    cout << fans << '\n';
+    Vec<ll> adj[n + 1];
+    for (ll i = 1; i <= n - 1; i++) {
+        ll u , v;
+        cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);    
+    }
+
+    
+    vector<bool> seen(n+1, false);
+    ll M = 30;
+    Vec<Vec<ll>> dp(n + 1, vector<ll> (M + 1, INF64));
+    Vec<Vec<ll>> f(n + 1, vector<ll> (M + 1, INF64));
+
+
+    for (ll i = 1; i <= n; i++) {
+        for (ll j = 1; j <= M; j++) {
+            f[i][j] = a[i] * j;
+        }
+    }
+
+
+
+    for (ll i = 1; i <= n; i++) {
+        for (ll j = 1; j <= M; j++) {
+            dp[i][j] = 0;
+        }
+    }
+
+    function<void(i32)> dfs = [&] (i32 i) {
+        seen[i] = true;
+        bool entered=false;
+        
+        for (auto& ch : adj[i]) {
+            if (!seen[ch]) {
+                entered=true;
+                dfs (ch);
+                for (ll j = 1; j <= M; j++) {
+                    ll val = 1e18;
+                    for (ll k = 1; k <= M; k++) {
+                        if (j != k) {
+                            val = min(val, dp[ch][k]);
+                        }
+                    }
+                    dp[i][j] += val;
+                }
+            }
+        }
+        for (ll j = 1; j <= M; j++){
+            dp[i][j] += f[i][j];
+        }
+        
+
+    };
+
+    dfs(1);
+
+    ll fans = 1e18;
+    for (ll i =1 ; i <= M; i++) {
+        fans = min(fans, dp[1][i]);
+    }
+
+    cout << fans << "\n";
 }
 
 signed main() {
 
     i32 t;
     t = 1;
+    cin >> t;
     while (t--) {
         solve();
     }
 }
-

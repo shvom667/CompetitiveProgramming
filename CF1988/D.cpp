@@ -1,4 +1,3 @@
-
 #define FAST_IO
 // ============
 
@@ -16,7 +15,7 @@ using namespace std;
 
 using u32 = unsigned int;
 using u64 = unsigned long long;
-using i32 = signed int;
+using i32 = long long;
 using i64 = signed long long;
 using f64 = double;
 using f80 = long double;
@@ -405,7 +404,7 @@ class FactorialTable {
     }
 };
 
-using Mint = ModInt<mod998244353>;
+using Mint = ModInt<mod1000000007>;
 // ============
 
 struct DSU {
@@ -711,19 +710,87 @@ using pl = pair<ll, ll>;
 // ============
 
 void solve() {
-    Mint fans=0;
-    Mint M = 2;
-    Vec<ll> cnt = {2};
-    for(ll l=1; l<=2; l++){
-        ll nlp=l;
-        Mint v = M;
-        for (ll i=0;i>=0;i--){
-            fans+=v.pow(cnt[i]);
-            dbg(fans);
-            v-=1;
-        }
+    ll n;
+    cin >> n;
+    Vec<ll> a(n + 1);
+    for (ll i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
+    Vec<ll> adj[n+1];
+    for(ll i = 1; i <= n - 1; i++) {
+        ll u, v;
+        cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);
+    }
 
-        dbg(l, fans);
+    auto func = [&] {
+        vector<bool> seen(n+1, false);
+        Vec<Vec<ll>> dp(n + 1, Vec<ll> (2, 0));
+        ll cur_sum = 0;
+        for (ll i = 1; i <= n; i++) {
+            if (a[i] > 0) {
+                cur_sum += a[i];
+            }
+        }
+        function<void(i32)> dfs = [&] (i32 i) {
+            seen[i] = true;
+            for (auto& ch : adj[i]) {
+                if (!seen[ch]) {
+                    dfs (ch);
+                    dp[i][0] += max(0ll, max(dp[ch][0], dp[ch][1]));
+                    dp[i][1] += max(0ll, dp[ch][0]);
+                }
+            }
+            dp[i][1] += a[i];
+            dp[i][0] = max(0ll, dp[i][0]);
+        };
+
+        dfs(1);
+
+        
+        vector<bool> seen2(n+1, false);
+        vector<bool> chosen(n+1, false);
+        function<void(i32, i32)> dfs2 = [&] (i32 i, i32 par) {
+            seen2[i] = true;
+            if (par == -1 || chosen[par] == false) {
+                if (dp[i][1] > dp[i][0]) {
+                    chosen[i] = true;
+                } else {
+                    chosen[i] = false;
+                }
+            } else {
+                chosen[i] = false;           
+            }
+            for (auto& ch : adj[i]) {
+                if (!seen2[ch]) {
+                    dfs2 (ch, i);
+                }
+            }
+        };
+        dfs2(1, -1);
+        dbg(chosen);
+        ll sum = 0;
+        for (ll i = 1; i<= n; i++) {
+            if (chosen[i]) {
+                a[i] = -10;
+            }else{
+                sum += max(0ll, a[i]);
+            }
+        }
+        dbg(a);
+        return cur_sum - max(dp[1][1], dp[1][0]);
+        
+    };
+    ll fans = accumulate(1 + ALL(a), 0ll);
+    // ll fans = 0;
+    while (true) {
+        if (count(1 + ALL(a), -10ll) == n) {
+            break;
+        }
+        ll res = func();
+        dbg(res);
+        fans += res;
     }
     cout << fans << '\n';
 }
@@ -732,8 +799,8 @@ signed main() {
 
     i32 t;
     t = 1;
+    cin >> t;
     while (t--) {
         solve();
     }
 }
-

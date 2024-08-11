@@ -1,4 +1,3 @@
-
 #define FAST_IO
 // ============
 
@@ -405,7 +404,7 @@ class FactorialTable {
     }
 };
 
-using Mint = ModInt<mod998244353>;
+using Mint = ModInt<mod1000000007>;
 // ============
 
 struct DSU {
@@ -711,29 +710,15 @@ using pl = pair<ll, ll>;
 // ============
 
 void solve() {
-    Mint fans=0;
-    Mint M = 2;
-    Vec<ll> cnt = {2};
-    for(ll l=1; l<=2; l++){
-        ll nlp=l;
-        Mint v = M;
-        for (ll i=0;i>=0;i--){
-            fans+=v.pow(cnt[i]);
-            dbg(fans);
-            v-=1;
-        }
-
-        dbg(l, fans);
-    }
-    cout << fans << '\n';
+    
 }
 
 signed main() {
 
     i32 t;
     t = 1;
+    cin >> t;
     while (t--) {
         solve();
     }
 }
-
