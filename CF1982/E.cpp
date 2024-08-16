@@ -1,4 +1,6 @@
+#define ONLINE_JUDGE
 #define FAST_IO
+
 // ============
 
 #include <bits/stdc++.h>
@@ -708,33 +710,79 @@ const string nl = "\n";
 using pl = pair<ll, ll>;
 
 // ============
+Mint dp[62][62];
+Mint to = 2;
 
 void solve() {
-  ll n = 10;
-  ll m = 6;
-  ll dp[11][7];
-  memset(dp,0,sizeof(dp));
-  for (ll i = 1; i <= 6; i++) 
-    dp[1][i] = 1;
+    ll N, K;
+    
+    cin >> N >> K;
+    N--;
+    function<Mint(ll, ll)> dfs = [&] (ll n, ll b) {
+        if (b == 0 || n == 0) {
+            return (Mint)1;
+        }
+        if (__builtin_popcount(n+1) <= 1) {
+            ll h = log2(n+1);
+            return dp[h][b];
+        }
+        // ll h = log2(n);
 
-  for (ll i = 2; i <= n; i++) {
-    dp[i][1] = 1;
-    for (ll j = 2; j <= m; j++) {
-      dp[i][j] += dp[i][j-1] + dp[i-1][j];
-    }
-  }
-  for (ll j = 1; j <= m; j++)                                                                       
-    for (ll i = 1; i <= n; i++) {
-      cout << dp[i][j] << " \n"[i == n];
-    }
+        ll h = 0;
+        for (ll i = 0; i <= 60; i++) {
+            if ((1ll<<i)&n) {
+                h = i;
+            }
+        }   
+
+        Mint res = 0;
+        res += dp[h][b];
+        dbg(n, b, h, res);
+        
+        res += dfs(n-(1ll<<h), b-1);
+        dbg(res);
+        dbg("hi");
+        if (b >= h+1) {
+            dbg("hello1");
+            res += ((Mint)n - to.pow(h) + 1) * (to.pow(h));
+        }
+        if (b == h) {
+            dbg("hello2");
+            ll v = min(n, ((1ll<<(h+1))-2)) - (1ll<<h) + 1;
+            v %= mod1000000007;
+            res += (to.pow(h)) * (Mint(v));
+        }
+
+        return res;
+    };
+
+    
+    Mint res = dfs(N, K);
+    // cout << 5000050000%mod1000000007 << "\n";
+    cout << res << "\n";
 }
 
 signed main() {
-
+    for(ll i = 0; i <= 61; i++) {
+        dp[0][i] = 1;
+        dp[i][0] = 1;
+    }
+    for (ll k = 1; k <= 61; k++) {
+        for (ll b = 1; b <= 61; b++) {
+            dp[k][b] += dp[k-1][b] + dp[k-1][b-1];
+            if (b >= k) {
+                dp[k][b] += to.pow(k-1) * to.pow(k-1);
+            }
+            if (b == k-1) {
+                dp[k][b] += to.pow(k-1) * (to.pow(k-1) - 1);
+            }
+        }
+    }
+    
     i32 t;
     t = 1;
+    cin >> t;
     while (t--) {
         solve();
     }
 }
-

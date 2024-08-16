@@ -710,29 +710,91 @@ using pl = pair<ll, ll>;
 // ============
 
 void solve() {
-  ll n = 10;
-  ll m = 6;
-  ll dp[11][7];
-  memset(dp,0,sizeof(dp));
-  for (ll i = 1; i <= 6; i++) 
-    dp[1][i] = 1;
+    ll N, K;
+    cin >> N >> K;
+    ll a[N+1];
+    Mint x,y;
+    x=y=0;
+    Mint tot = 0;
+    for(ll i=1;i<=N;i++){
+        cin>>a[i];
+        tot += a[i];
+        if (i <= K){
+            x += a[i];
+        }else{
+            y += a[i];
+        }
+    }
+    if (K==N){
+        cout << x << " " << 0 << "\n";  
+        return;
+    }
 
-  for (ll i = 2; i <= n; i++) {
-    dp[i][1] = 1;
-    for (ll j = 2; j <= m; j++) {
-      dp[i][j] += dp[i][j-1] + dp[i-1][j];
+    x /= K;
+    y /= N-K;
+    
+    Vec<Vec<Mint>> dp(4, Vec<Mint>(N+1, 0));
+    for(ll i=1;i<=N;i++){
+        dp[0][i] = ((i + 1) / 2)*y;
+        if(i<=3){
+            dp[i][i] = i * x;
+        }
     }
-  }
-  for (ll j = 1; j <= m; j++)                                                                       
-    for (ll i = 1; i <= n; i++) {
-      cout << dp[i][j] << " \n"[i == n];
+
+    for (ll i = 2; i <= N; i++) {
+        for (ll k = 1; k <= min(N - 1,3ll); k++) {
+            dp[k][i] = 0;
+            Mint a = 0;
+            a = k; a/=i;
+            a *= (x + dp[k-1][i-1]);
+            Mint b = 0;
+            b = (i-k); b/=i;
+            b *= (y + k * x + (i-k-1)*y - dp[k][i-1]);
+            dp[k][i] = a + b;
+
+        }
     }
+    
+    Mint d = y - x;
+    function<Mint(i32, i32)> dfs = [&] (i32 n, i32 k) {
+        if (k == 0) {
+            return ((n + 1)/2) * y;
+        }
+        if (n == k) {
+            return n * x;
+        }
+        if (k > n) return ((Mint)0);
+        if (k <= 3){
+            return dp[k][n];
+        }
+        if (n%2!=k%2){
+            if (n%2==0){
+                return dp[1][n] - ((k-1)/2)*d;
+            }
+            else{
+                return dp[0][n] - (k/2)*d;
+            }
+        }   
+        Mint a = 0;
+        a = k; a/=n;
+        a *= (x + dfs(n-1,k-1));
+
+        Mint b = 0;
+        b = (n-k); b/=n;
+        b *= (y + k * x + (n-k-1)*y - dfs(n-1, k));
+        return a + b;
+    };
+
+    Mint res = dfs(N, K);
+    cout << res << " " << tot - res << "\n";
+
 }
 
-signed main() {
 
+signed main() {
     i32 t;
     t = 1;
+    cin >> t;
     while (t--) {
         solve();
     }

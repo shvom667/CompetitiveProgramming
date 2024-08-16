@@ -708,33 +708,82 @@ const string nl = "\n";
 using pl = pair<ll, ll>;
 
 // ============
-
+ll tc=0;
 void solve() {
-  ll n = 10;
-  ll m = 6;
-  ll dp[11][7];
-  memset(dp,0,sizeof(dp));
-  for (ll i = 1; i <= 6; i++) 
-    dp[1][i] = 1;
+    ll N, K;
+    cin >> N >> K;
+    ll a[N+1];
+    Mint x,y;
+    x=y=0;
+    Mint tot = 0;
+    for(ll i=1;i<=N;i++){
+        cin>>a[i];
+        tot += a[i];
+        if (i <=K){
+            x += a[i];
+        }else{
+            y+=a[i];
+        }
+    }
+    if (K==N){
+        cout << x << " " << 0 << "\n";  
+        return;
+    }
+    x /= K;
+    y /= N-K;
+    Mint dp[N+1][N+1];
+    
+    for(ll i=1;i<=N;i++){
+        dp[0][i] = ((i + 1) / 2)*y;
+        dp[i][i] = i * x;
+    }
 
-  for (ll i = 2; i <= n; i++) {
-    dp[i][1] = 1;
-    for (ll j = 2; j <= m; j++) {
-      dp[i][j] += dp[i][j-1] + dp[i-1][j];
+    for (ll i = 2; i <= N; i++) {
+        for (ll k = 1; k <= N - 1; k++) {
+            dp[k][i] = 0;
+            Mint a = 0;
+            a = k; a/=i;
+            a *= (x + dp[k-1][i-1]);
+            Mint b = 0;
+            b = (i-k); b/=i;
+            b *= (y + k * x + (i-k-1)*y - dp[k][i-1]);
+            dp[k][i] = a + b;
+
+        }
     }
-  }
-  for (ll j = 1; j <= m; j++)                                                                       
-    for (ll i = 1; i <= n; i++) {
-      cout << dp[i][j] << " \n"[i == n];
+    for(ll i=0;i<=N;i++)
+    {
+        for(ll k=0;k<=N;k++){
+            cout << dp[k][i] << ",\n"[k==N];
+        }
     }
+    dbg(x,y,x-y,y-x);
+    Mint d = y - x;
+    for (ll i = 1; i <= N; i++) {
+        for (ll k = 1; k <= N; k++) {
+            if (k > i) continue;
+            if (i%2!=k%2){
+                if(i%2==0){
+                    dbg(tc,"e",i,k);
+                    assert(dp[k][i] == dp[1][i] - ((k-1)/2)*d);
+                }
+                else{
+                    dbg(tc,"o",i,k);
+                    assert(dp[k][i] == dp[0][i] - (k/2)*d);
+                }
+            }
+        }
+    }
+    // cout << dp[K][N] << " " << tot - dp[K][N] << '\n';
 }
 
 signed main() {
 
     i32 t;
     t = 1;
+    cin>>t;
     while (t--) {
+        tc++;
         solve();
     }
 }
-

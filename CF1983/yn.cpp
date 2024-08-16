@@ -710,23 +710,16 @@ using pl = pair<ll, ll>;
 // ============
 
 void solve() {
-  ll n = 10;
-  ll m = 6;
-  ll dp[11][7];
-  memset(dp,0,sizeof(dp));
-  for (ll i = 1; i <= 6; i++) 
-    dp[1][i] = 1;
+    Mint a = 14053377;
+    Mint b = 11491812;
+    Mint c = 8930247;
 
-  for (ll i = 2; i <= n; i++) {
-    dp[i][1] = 1;
-    for (ll j = 2; j <= m; j++) {
-      dp[i][j] += dp[i][j-1] + dp[i-1][j];
-    }
-  }
-  for (ll j = 1; j <= m; j++)                                                                       
-    for (ll i = 1; i <= n; i++) {
-      cout << dp[i][j] << " \n"[i == n];
-    }
+    Mint e = 10430365;
+    Mint f = 7868800;
+
+    cout << (e - f) << "\n";
+    cout << (a-b) << "\n";
+    cout << (b-c) << "\n";
 }
 
 signed main() {
@@ -737,4 +730,3 @@ signed main() {
         solve();
     }
 }
-
