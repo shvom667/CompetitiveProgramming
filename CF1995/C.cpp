@@ -709,7 +709,8 @@ using pl = pair<ll, ll>;
 
 // ============
 
-    Vec<ll>  p2; 
+Vec<ll>  p2; 
+
 void solve() {
     ll n;
     cin >> n;
