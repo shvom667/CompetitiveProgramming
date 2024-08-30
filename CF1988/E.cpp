@@ -513,7 +513,7 @@ struct Lsegtree {
     }
     T combine(T l, T r) {
         // change this function as required.
-        T ans = (l + r);
+        T ans = min(l, r);
         return ans;
     }
     void buildUtil(ll v, ll tl, ll tr, vector<T>&a) {
@@ -708,15 +708,331 @@ const string nl = "\n";
 using pl = pair<ll, ll>;
 
 // ============
+const ll MAXN = 5e5 + 10;
+int lg[MAXN];
+/*Make sparse table for range queries*/
+const ll K = 30;
+Vec<Vec<ll>> rmq(Vec<ll> a){
+    ll N = a.size()+1;
+    Vec<Vec<ll>> st(K+1, Vec<ll> (N));
+
+    // std::copy(a.begin(), a.end(), st[0]);
+    st[0] = a;
+    for (int i = 1; i <= K; i++)
+        for (int j = 0; j + (1 << i) <= N; j++)
+            st[i][j] = min(st[i - 1][j], st[i - 1][j + (1 << (i - 1))]);
+    return st;
+}
 
 void solve() {
-    
+    ll n;
+    cin >> n;
+    Vec<ll> a(n+2);
+    Vec<ll> fans(n+2),fans1(n+2),fans2(n+2);
+    a[0] = a[n+1] = -INF;
+    for(ll i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
+    ll totAns;
+
+    Vec<ll> ffans=Vec<ll>(n+2,0);
+    dbg(a);
+    if(true){
+        Vec<ll> pse1,pse2,nse1,nse2;
+        pse1=pse2=nse1=nse2=a;
+        if (true) {
+            deque<ll> q;
+            q.pb(0);
+            for(ll i = 1; i <= n; i++) {
+                while (a[q.back()] > a[i]) {
+                    q.pop_back();
+                }
+                if (q.size() >= 2) {
+                    pse1[i] = q[q.size()-1];
+                }
+                if (q.size() == 1) {
+                    pse1[i] = q[q.size()-1];
+                }
+                q.pb(i);
+            }
+        }
+        if (true) {
+            deque<ll> q;
+            q.pb(n+1);
+            for(ll i = n; i >= 1; i--) {
+                while (a[q.back()] > a[i]) {
+                    q.pop_back();
+                }
+                if (q.size() >= 2) {
+                    nse1[i] = q[q.size()-1];
+                }
+                if (q.size() == 1) {
+                    nse1[i] = q[q.size()-1];
+                }
+                q.push_back(i);
+            }
+        }
+        auto st = rmq(a);
+        auto query = [&](ll L, ll R) {
+            int i = lg[R - L + 1];
+            int minimum = min(st[i][L], st[i][R - (1 << i) + 1]);
+            return minimum;
+        };
+        // Lsegtree<ll, ll> seg(n+2,INF64,0);
+        // seg.build(a);
+        if (true) {
+            for (ll i = 1; i <= n; i++) {
+                if (nse1[i] == n+1) {
+                    nse2[i] = n + 1;
+                }
+                else {
+                    ll l = nse1[i] + 1;
+                    ll r = n + 1;
+                    while (l <= r) {
+                        auto cond = [&](ll x) {
+                            return query(nse1[i]+1,x)<a[i];
+                        };
+                        ll mid = l + (r - l) / 2;
+                        if (cond(mid)) {
+                            r = mid - 1;
+                        } else {
+                            l = mid + 1;
+                        }
+                    }
+                    nse2[i] = l;
+                }
+            }  
+        }
+        if (true) {
+            for (ll i = 1; i <= n; i++) {
+                if (pse1[i] == 0) {
+                    pse2[i] = 0;
+                }
+                else {
+                    ll l = 0;
+                    ll r = pse1[i] - 1;
+                    while (l <= r) {
+                        auto cond = [&](ll x) {
+                            return query(x,pse1[i]-1)<a[i];
+                        };
+                        ll mid = l + (r - l) / 2;
+                        if (cond(mid)) {
+                            l = mid + 1;
+                        } else {
+                            r = mid - 1;
+                        }
+                    }
+                    pse2[i] = r;
+                }
+            }  
+        }
+        dbg(pse1);
+        dbg(nse1);
+        dbg(pse2);
+        totAns = 0;
+        for (ll i = 1; i <= n; i++) {
+            totAns += (i - pse1[i]) * (nse1[i] - i) * a[i];
+            ffans[i] -= (i - pse1[i]) * (nse1[i] - i) * a[i];
+        }
+        dbg(ffans);
+        dbg(totAns);
+
+        Vec<ll> fans(n+2,0);
+
+        Vec<ll> d1(n+2),d2(n+2),pd1(n+2,0),pd2(n+2,0);
+        for(ll i = 1; i <= n; i++) {
+            d1[i] = (nse2[i] - nse1[i]-1) * a[i] * (i - pse1[i]);
+            pd1[i] = pd1[i-1] + d1[i];
+        }
+        // d1[i] is not ok
+        map<ll, ll> mp;
+        for (ll i = 1; i <= n; i++) {
+            mp[nse1[i]] += d1[i];
+        }
+        for (ll i = 1; i <= n; i++) {
+            d2[i] = -1 * (i - pse1[i]) * a[i];
+        }
+        for(ll i = 1; i <= n; i++) {
+            if (pse1[i]+1<=i-1){
+                // fans[i] += pd1[i-1]-pd1[pse1[i]];
+            }
+            fans[i] += mp[i];
+        }
+        dbg(fans);
+        priority_queue<pl,Vec<pl>,greater<pl>> dq;
+        ll subSum=0;
+        
+        for(ll i = 1; i <= n; i++) {
+            while(!dq.empty() && dq.top().first<=i){
+                subSum -= dq.top().second;
+                dq.pop();
+            }
+            
+            fans[i] += subSum;
+            if (i == n) {
+                dbg(dq);
+            }
+            dq.push({nse1[i],d2[i]});
+            subSum += d2[i];
+        }
+
+        fans1=fans;
+        
+    }
+    reverse(ALL(a));
+    if(true){
+        Vec<ll> pse1,pse2,nse1,nse2;
+        pse1=pse2=nse1=nse2=a;
+        if (true) {
+            deque<ll> q;
+            q.pb(0);
+            for(ll i = 1; i <= n; i++) {
+                while (a[q.back()] > a[i]) {
+                    q.pop_back();
+                }
+                if (q.size() >= 2) {
+                    pse1[i] = q[q.size()-1];
+                }
+                if (q.size() == 1) {
+                    pse1[i] = q[q.size()-1];
+                }
+                q.pb(i);
+            }
+        }
+        if (true) {
+            deque<ll> q;
+            q.pb(n+1);
+            for(ll i = n; i >= 1; i--) {
+                while (a[q.back()] > a[i]) {
+                    q.pop_back();
+                }
+                if (q.size() >= 2) {
+                    nse1[i] = q[q.size()-1];
+                }
+                if (q.size() == 1) {
+                    nse1[i] = q[q.size()-1];
+                }
+                q.push_back(i);
+            }
+        }
+        auto st = rmq(a);
+        auto query = [&](ll L, ll R) {
+            int i = lg[R - L + 1];
+            int minimum = min(st[i][L], st[i][R - (1 << i) + 1]);
+            return minimum;
+        };
+
+        // Lsegtree<ll, ll> seg(n+2,INF64,0);
+        // seg.build(a);
+        if (true) {
+            for (ll i = 1; i <= n; i++) {
+                if (nse1[i] == n+1) {
+                    nse2[i] = n + 1;
+                }
+                else {
+                    ll l = nse1[i] + 1;
+                    ll r = n + 1;
+                    while (l <= r) {
+                        auto cond = [&](ll x) {
+                            return query(nse1[i]+1,x)<a[i];
+                        };
+                        ll mid = l + (r - l) / 2;
+                        if (cond(mid)) {
+                            r = mid - 1;
+                        } else {
+                            l = mid + 1;
+                        }
+                    }
+                    nse2[i] = l;
+                }
+            }  
+        }
+        if (true) {
+            for (ll i = 1; i <= n; i++) {
+                if (pse1[i] == 0) {
+                    pse2[i] = 0;
+                }
+                else {
+                    ll l = 0;
+                    ll r = pse1[i] - 1;
+                    while (l <= r) {
+                        auto cond = [&](ll x) {
+                            return query(x,pse1[i]-1)<a[i];
+                        };
+                        ll mid = l + (r - l) / 2;
+                        if (cond(mid)) {
+                            l = mid + 1;
+                        } else {
+                            r = mid - 1;
+                        }
+                    }
+                    pse2[i] = r;
+                }
+            }  
+            dbg(pse2);
+        }
+        totAns = 0;
+        for (ll i = 1; i <= n; i++) {
+            totAns += (i - pse1[i]) * (nse1[i] - i) * a[i];
+        }
+        dbg(totAns);
+
+        Vec<ll> fans(n+2,0);
+
+        Vec<ll> d1(n+2),d2(n+2),pd1(n+2,0),pd2(n+2,0);
+        for(ll i = 1; i <= n; i++) {
+            d1[i] = (nse2[i] - nse1[i]-1) * a[i] * (i - pse1[i]);
+            pd1[i] = pd1[i-1] + d1[i];
+        }
+        for (ll i = 1; i <= n; i++) {
+            d2[i] = -1 * (i - pse1[i]) * a[i];
+        }
+        // d1[i] is not ok
+        map<ll, ll> mp;
+        for (ll i = 1; i <= n; i++) {
+            mp[nse1[i]] += d1[i];
+        }
+        for(ll i = 1; i <= n; i++) {
+            if (pse1[i]+1<=i-1){
+                // fans[i] += pd1[i-1]-pd1[pse1[i]];
+            }
+            fans[i] += mp[i];   
+        }
+        dbg(fans);
+        priority_queue<pl,Vec<pl>,greater<pl>> dq;
+        ll subSum=0;
+        for(ll i = 1; i <= n; i++) {
+            while(!dq.empty() && dq.top().first<=i){
+                subSum -= dq.top().second;
+                dq.pop();
+            }
+            
+            fans[i] += subSum;
+            dq.push({nse1[i],d2[i]});
+            subSum += d2[i];
+        }
+
+        fans2=fans;
+    }
+    dbg(fans1);
+    dbg(fans2);
+    dbg(ffans);
+    for(ll i = 1; i <= n; i++) {
+        ffans[i] += totAns;
+        ffans[i] += fans1[i]+fans2[n+1-i];
+    }
+    for(ll i = 1; i <= n; i++){
+        cout << ffans[i] << " ";
+    }   cout << "\n";
 }
 
 signed main() {
 
     i32 t;
     t = 1;
+    lg[1] = 0;
+    for (int i = 2; i < MAXN; i++)
+        lg[i] = lg[i/2] + 1;
     cin >> t;
     while (t--) {
         solve();
