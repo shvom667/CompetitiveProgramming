@@ -1,7 +1,3 @@
-
-/*
-https://atcoder.jp/contests/arc170/submissions/57409110
-*/
 #define FAST_IO
 // ============
 
@@ -712,41 +708,13 @@ const string nl = "\n";
 using pl = pair<ll, ll>;
 
 // ============
-const ll N = 5000+20;
-void solve() {
-    ll n, m;
-    cin >> n >> m;
-    Vec<ll> s(n);
-    for (ll i = 0; i < n; i++) {
-        cin >> s[i];
-    }
-    Mint dp[n][n+1];
 
-    if (s[0] == 0) {
-        dp[0][1] = m;
-    }
-    if (s[0] == 1) {
-        dp[0][1] = 1;
-    }
+ll solve(ll n, ll m, Vec<ll> s) {
+    Mint fans = 0;
 
-    for (ll i = 1; i < n; i++) {
-        for (ll d = 1; d <= min(m+1,n); d++) {
-            if (s[i] == 0) {
-                dp[i][d] += dp[i-1][d] * d;
-                if (m + 1 - d >= 0)
-                    dp[i][d] += dp[i-1][d-1] * (m+1-d);
-            }
-            if (s[i] == 1) {
-                dp[i][d] += dp[i-1][d-1];
-            }
-        }
-    }
+    
 
-    Mint fans=0;
-    for (ll i = 0; i <= n; i++) {
-        fans += dp[n-1][i];
-    }
-    cout << fans << "\n";
+    return fans.get_val();
 }
 
 signed main() {
@@ -754,7 +722,12 @@ signed main() {
     i32 t;
     t = 1;
     while (t--) {
-        solve();
+        ll n, m;
+        cin >> n >> m;
+        Vec<ll> s(n+1);
+        for (ll i = 1; i <= n; i++) {
+            cin >> s[i];
+        }
+        cout << solve(n, m, s) << "\n";
     }
 }
-
