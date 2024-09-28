@@ -10,5 +10,6 @@ int main() {
     cin >> t;
     for (ll tc = 1; tc <= t; tc++) {
         auto res = solve();
+        cout << solve() << "\n";
     }
 }

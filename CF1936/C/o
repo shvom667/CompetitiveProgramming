@@ -1,0 +1,129 @@
+C.cpp: In instantiation of ‘void __print(const A&) [with A = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’:
+C.cpp:102:12:   required from ‘void _print(const Head&, const Tail& ...) [with Head = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >; Tail = {}]’
+C.cpp:398:17:   required from here
+C.cpp:43:5: error: no matching function for call to ‘begin(const std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >&)’
+   43 |     for (const auto &i : x) {
+      |     ^~~
+In file included from /usr/include/c++/13/bits/algorithmfwd.h:39,
+                 from /usr/include/c++/13/bits/stl_algo.h:59,
+                 from /usr/include/c++/13/algorithm:61,
+                 from /usr/include/x86_64-linux-gnu/c++/13/bits/stdc++.h:51,
+                 from C.cpp:2:
+/usr/include/c++/13/initializer_list:88:5: note: candidate: ‘template<class _Tp> constexpr const _Tp* std::begin(initializer_list<_Tp>)’
+   88 |     begin(initializer_list<_Tp> __ils) noexcept
+      |     ^~~~~
+/usr/include/c++/13/initializer_list:88:5: note:   template argument deduction/substitution failed:
+C.cpp:43:5: note:   ‘std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’ is not derived from ‘std::initializer_list<_Tp>’
+   43 |     for (const auto &i : x) {
+      |     ^~~
+In file included from /usr/include/c++/13/string:53,
+                 from /usr/include/c++/13/bitset:52,
+                 from /usr/include/x86_64-linux-gnu/c++/13/bits/stdc++.h:52:
+/usr/include/c++/13/bits/range_access.h:52:5: note: candidate: ‘template<class _Container> constexpr decltype (__cont.begin()) std::begin(_Container&)’
+   52 |     begin(_Container& __cont) -> decltype(__cont.begin())
+      |     ^~~~~
+/usr/include/c++/13/bits/range_access.h:52:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/13/bits/range_access.h: In substitution of ‘template<class _Container> constexpr decltype (__cont.begin()) std::begin(_Container&) [with _Container = const std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’:
+C.cpp:43:5:   required from ‘void __print(const A&) [with A = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’
+C.cpp:102:12:   required from ‘void _print(const Head&, const Tail& ...) [with Head = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >; Tail = {}]’
+C.cpp:398:17:   required from here
+/usr/include/c++/13/bits/range_access.h:52:50: error: ‘const struct std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’ has no member named ‘begin’
+   52 |     begin(_Container& __cont) -> decltype(__cont.begin())
+      |                                           ~~~~~~~^~~~~
+C.cpp: In instantiation of ‘void __print(const A&) [with A = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’:
+C.cpp:102:12:   required from ‘void _print(const Head&, const Tail& ...) [with Head = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >; Tail = {}]’
+C.cpp:398:17:   required from here
+/usr/include/c++/13/bits/range_access.h:63:5: note: candidate: ‘template<class _Container> constexpr decltype (__cont.begin()) std::begin(const _Container&)’
+   63 |     begin(const _Container& __cont) -> decltype(__cont.begin())
+      |     ^~~~~
+/usr/include/c++/13/bits/range_access.h:63:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/13/bits/range_access.h: In substitution of ‘template<class _Container> constexpr decltype (__cont.begin()) std::begin(const _Container&) [with _Container = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’:
+C.cpp:43:5:   required from ‘void __print(const A&) [with A = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’
+C.cpp:102:12:   required from ‘void _print(const Head&, const Tail& ...) [with Head = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >; Tail = {}]’
+C.cpp:398:17:   required from here
+/usr/include/c++/13/bits/range_access.h:63:56: error: ‘const struct std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’ has no member named ‘begin’
+   63 |     begin(const _Container& __cont) -> decltype(__cont.begin())
+      |                                                 ~~~~~~~^~~~~
+C.cpp: In instantiation of ‘void __print(const A&) [with A = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’:
+C.cpp:102:12:   required from ‘void _print(const Head&, const Tail& ...) [with Head = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >; Tail = {}]’
+C.cpp:398:17:   required from here
+/usr/include/c++/13/bits/range_access.h:95:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr _Tp* std::begin(_Tp (&)[_Nm])’
+   95 |     begin(_Tp (&__arr)[_Nm]) noexcept
+      |     ^~~~~
+/usr/include/c++/13/bits/range_access.h:95:5: note:   template argument deduction/substitution failed:
+C.cpp:43:5: note:   mismatched types ‘_Tp [_Nm]’ and ‘const std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’
+   43 |     for (const auto &i : x) {
+      |     ^~~
+In file included from /usr/include/x86_64-linux-gnu/c++/13/bits/stdc++.h:166:
+/usr/include/c++/13/valarray:1227:5: note: candidate: ‘template<class _Tp> _Tp* std::begin(valarray<_Tp>&)’
+ 1227 |     begin(valarray<_Tp>& __va) noexcept
+      |     ^~~~~
+/usr/include/c++/13/valarray:1227:5: note:   template argument deduction/substitution failed:
+C.cpp:43:5: note:   types ‘std::valarray<_Tp>’ and ‘const std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’ have incompatible cv-qualifiers
+   43 |     for (const auto &i : x) {
+      |     ^~~
+/usr/include/c++/13/valarray:1238:5: note: candidate: ‘template<class _Tp> const _Tp* std::begin(const valarray<_Tp>&)’
+ 1238 |     begin(const valarray<_Tp>& __va) noexcept
+      |     ^~~~~
+/usr/include/c++/13/valarray:1238:5: note:   template argument deduction/substitution failed:
+C.cpp:43:5: note:   ‘const std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’ is not derived from ‘const std::valarray<_Tp>’
+   43 |     for (const auto &i : x) {
+      |     ^~~
+C.cpp:43:5: error: no matching function for call to ‘end(const std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >&)’
+/usr/include/c++/13/initializer_list:99:5: note: candidate: ‘template<class _Tp> constexpr const _Tp* std::end(initializer_list<_Tp>)’
+   99 |     end(initializer_list<_Tp> __ils) noexcept
+      |     ^~~
+/usr/include/c++/13/initializer_list:99:5: note:   template argument deduction/substitution failed:
+C.cpp:43:5: note:   ‘std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’ is not derived from ‘std::initializer_list<_Tp>’
+   43 |     for (const auto &i : x) {
+      |     ^~~
+/usr/include/c++/13/bits/range_access.h:74:5: note: candidate: ‘template<class _Container> constexpr decltype (__cont.end()) std::end(_Container&)’
+   74 |     end(_Container& __cont) -> decltype(__cont.end())
+      |     ^~~
+/usr/include/c++/13/bits/range_access.h:74:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/13/bits/range_access.h: In substitution of ‘template<class _Container> constexpr decltype (__cont.end()) std::end(_Container&) [with _Container = const std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’:
+C.cpp:43:5:   required from ‘void __print(const A&) [with A = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’
+C.cpp:102:12:   required from ‘void _print(const Head&, const Tail& ...) [with Head = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >; Tail = {}]’
+C.cpp:398:17:   required from here
+/usr/include/c++/13/bits/range_access.h:74:48: error: ‘const struct std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’ has no member named ‘end’
+   74 |     end(_Container& __cont) -> decltype(__cont.end())
+      |                                         ~~~~~~~^~~
+C.cpp: In instantiation of ‘void __print(const A&) [with A = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’:
+C.cpp:102:12:   required from ‘void _print(const Head&, const Tail& ...) [with Head = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >; Tail = {}]’
+C.cpp:398:17:   required from here
+/usr/include/c++/13/bits/range_access.h:85:5: note: candidate: ‘template<class _Container> constexpr decltype (__cont.end()) std::end(const _Container&)’
+   85 |     end(const _Container& __cont) -> decltype(__cont.end())
+      |     ^~~
+/usr/include/c++/13/bits/range_access.h:85:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/13/bits/range_access.h: In substitution of ‘template<class _Container> constexpr decltype (__cont.end()) std::end(const _Container&) [with _Container = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’:
+C.cpp:43:5:   required from ‘void __print(const A&) [with A = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’
+C.cpp:102:12:   required from ‘void _print(const Head&, const Tail& ...) [with Head = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >; Tail = {}]’
+C.cpp:398:17:   required from here
+/usr/include/c++/13/bits/range_access.h:85:54: error: ‘const struct std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’ has no member named ‘end’
+   85 |     end(const _Container& __cont) -> decltype(__cont.end())
+      |                                               ~~~~~~~^~~
+C.cpp: In instantiation of ‘void __print(const A&) [with A = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >]’:
+C.cpp:102:12:   required from ‘void _print(const Head&, const Tail& ...) [with Head = std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >; Tail = {}]’
+C.cpp:398:17:   required from here
+/usr/include/c++/13/bits/range_access.h:106:5: note: candidate: ‘template<class _Tp, long unsigned int _Nm> constexpr _Tp* std::end(_Tp (&)[_Nm])’
+  106 |     end(_Tp (&__arr)[_Nm]) noexcept
+      |     ^~~
+/usr/include/c++/13/bits/range_access.h:106:5: note:   template argument deduction/substitution failed:
+C.cpp:43:5: note:   mismatched types ‘_Tp [_Nm]’ and ‘const std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’
+   43 |     for (const auto &i : x) {
+      |     ^~~
+/usr/include/c++/13/valarray:1249:5: note: candidate: ‘template<class _Tp> _Tp* std::end(valarray<_Tp>&)’
+ 1249 |     end(valarray<_Tp>& __va) noexcept
+      |     ^~~
+/usr/include/c++/13/valarray:1249:5: note:   template argument deduction/substitution failed:
+C.cpp:43:5: note:   types ‘std::valarray<_Tp>’ and ‘const std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’ have incompatible cv-qualifiers
+   43 |     for (const auto &i : x) {
+      |     ^~~
+/usr/include/c++/13/valarray:1265:5: note: candidate: ‘template<class _Tp> const _Tp* std::end(const valarray<_Tp>&)’
+ 1265 |     end(const valarray<_Tp>& __va) noexcept
+      |     ^~~
+/usr/include/c++/13/valarray:1265:5: note:   template argument deduction/substitution failed:
+C.cpp:43:5: note:   ‘const std::_Rb_tree_const_iterator<std::pair<long long int, long long int> >’ is not derived from ‘const std::valarray<_Tp>’
+   43 |     for (const auto &i : x) {
+      |     ^~~
+make: *** [<builtin>: C] Error 1
