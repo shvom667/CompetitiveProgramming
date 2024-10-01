@@ -7,7 +7,15 @@ using Vec = vector<T>;
 
 
 auto solve() {
-    return 0;
+    ll n;
+    cin >> n;
+    ll a[n];
+    ll m = 1e9;
+    for (ll i = 0; i < n; i++) cin >> a[i];
+    for (ll i = 0; i < n - 1; i++) {
+        m = min(m, max(a[i], a[i+1]));
+    }
+    return m - 1;
 }
 
 int main() {
