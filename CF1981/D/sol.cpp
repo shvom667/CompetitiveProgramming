@@ -5,7 +5,6 @@ using ll=long long;
 template <typename T>
 using Vec = vector<T>;
 
-
 // =================
 
 // Debugging template
@@ -110,153 +109,51 @@ void _print(const Head &H, const Tail &...T) {
 #endif
 
 // =================
-auto solve(ll n, ll k, vector<char> s) {
-	char p = '$';
-	ll j = 0;
-	for (ll i = 0, cnt = 0; i < n; i++) {
-		if (s[i] == p) {
-			cnt++;
-		} else {
-			if (cnt == k || i == 0) {
-				cnt = 0;
-				cnt++;
-				p = s[i];
-			} else {
-				if (cnt > k) {
-					j = i - k;
-					break;
-				} else {
-					j = i;
-					break;
-				}
+const ll M = 1e6 + 10;
+// ============
+
+vector<int> MinPrime;
+vector<int> PRIME;
+void pre_calc_sieve(int N) {
+	MinPrime = vector<int> (N + 1, 0);
+	for (int i = 2; i <= N; ++i) {
+		if (MinPrime[i] == 0) {
+			MinPrime[i] = i;
+			PRIME.push_back(i);
+		}
+		for (int j = 0; i * PRIME[j] <= N; ++j) {
+			MinPrime[i * PRIME[j]] = PRIME[j];
+			if (PRIME[j] == MinPrime[i]) {
+				break;
 			}
 		}
-		dbg(i, cnt);
-
-	}
-
-	auto valid = [&] (vector<char> ss) {
-		bool ok = true;
-        dbg(ss);
-        char p = '$';
-        ll cnt = 0;
-		for (ll i = 0; i < n; i++) {
-			if (ss[i] == p) {
-				cnt++;
-			} else {
-				if (cnt == k || i == 0) {
-					cnt = 0;
-					cnt++;
-					p = ss[i];
-				} else {
-					ok = false;
-				}
-			}
-		}
-		if (cnt != k) {
-			ok = false;
-		}
-		return ok;
-	};
-	vector<char> ss = s;
-	reverse(ss.begin() + j, ss.end());
-	if (valid(ss)) {
-		return (j == 0 ? n : j);
-	} 
-	return -1ll;
-}
-
-auto bf(ll n, ll k, vector<char> s) {
-	ll fans = -1;
-	for (ll j = 0; j < n; j++) {
-		vector<char> ss = s;
-		reverse(ss.begin()+j,ss.end());
-		char p = '$';
-		bool ok = true;
-        dbg(ss);
-
-        ll cnt = 0;
-		for (ll i = 0; i < n; i++) {
-			if (ss[i] == p) {
-				cnt++;
-			} else {
-				if (cnt == k || i == 0) {
-					cnt = 0;
-					cnt++;
-					p = ss[i];
-				} else {
-					ok = false;
-				}
-			}
-			dbg(i, cnt);
-
-		}
-		if (cnt != k) {
-			ok = false;
-		}
-		dbg(ok);
-		if (ok) {
-			dbg("hello", j);
-			fans = j;
-		}
-		dbg(fans);
-	}
-	if (fans == 0) fans = n;
-	return fans;
-}
-
-
-mt19937 rng((int) std::chrono::steady_clock::now().time_since_epoch().count());
-int rnd(int x, int y) {
-  return uniform_int_distribution<int>(x, y)(rng);
-}
-auto stress() {
-	while(true){
-		ll n = rnd(5, 10);
-		ll k = 11;
-		while (n % k > 0) {
-			k = rnd(1, 10);
-		}
-		vector<char> s(n);
-		for(ll i = 0; i < n; i++) {
-			if ((i / k) % 2 == 0) {
-				s[i] = '0';
-			}else{
-				s[i] = '1';
-			}
-		}
-		do {
-	        auto sans = solve(n, k, s);
-	        auto bans = bf(n, k, s);
-	        // cout << sans << " " << bans << "\n";
-	        if ((sans != -1) == (bans != -1)) {
-	        	cout << "ok\n";
-	        } else {
-	        	cout << n << " " << k << "\n";
-	        	for (auto&v:s){
-	        		cout<<v;
-	        	}	cout<<"\n";
-	        	cout << sans << " " << bans << "\n";
-	        	exit(0);
-	        }
-		}	while (next_permutation(begin(s), end(s)));
 	}
 }
 
+// ============
+
+auto solve() {
+    ll n = 1e6;
+    ll cnt = 0;
+    for (ll i = 1; i <= n; i++) {
+        cnt += MinPrime[i] == i;
+        if (cnt * cnt - cnt - 1 >= i ) {
+            cout << "ok\n";
+        } else {
+            dbg(i);
+        }
+    }
+}
 
 int main() {
-	// stress();
+    pre_calc_sieve(M);
     ll T;
-    cin >> T;
+    T = 1;
+    //cin >> T;
     for (ll tc = 1; tc <= T; tc++) {
-    	ll n, k;
-    	cin >> n >> k;
-    	vector<char> s(n);
-    	for (auto&c : s) cin >> c;
-        auto sans = solve(n, k, s);
-        // auto bans = bf(n, k, s);
-        // cout << sans << " " << bans << "\n";
-    	cout << sans << "\n";
+        solve();
+        //auto res = solve();
+        //cout << res << "\n";
     }
     return 0;
 }

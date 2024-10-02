@@ -1,6 +1,6 @@
 #!/bin/bash
 
-path="$HOME/metaDownloads"
+path="$HOME/Downloads"
 name=$(find "$path" -maxdepth 1 -type f -printf "%T+ %p\n" | sort | tail -n 1 | awk '{print $2}')
 bname=$(basename "$name")
 
