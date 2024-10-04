@@ -3,6 +3,7 @@ using ll = long long;
 using namespace std;
 
 auto solve() {
+	return 0;
 }
 
 int main() {
