@@ -12,7 +12,22 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
-    return 0;
+    ll fans=0;
+
+    ll n, r;
+    cin >> n >> r;
+    ll used=0;
+    ll k=0;
+    for (ll i = 0; i < n; i++) {
+        ll x;
+        cin >> x;
+        k += (x%2==1);
+        used += x/2;
+        fans+=(x/2)*2;
+    }
+    ll left = r-used;
+    return fans + (k <= left ? k : 2*left-k);
+
 }
 
 int main() {

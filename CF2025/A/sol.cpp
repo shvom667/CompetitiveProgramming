@@ -12,7 +12,17 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
-    return 0;
+    string a, b;
+    cin >> a >> b;
+    ll cnt = min((ll)a.size(),(ll)b.size());
+    for (ll i = 0; i < min((ll)a.size(), (ll)b.size()); i++) {
+        if (a[i] != b[i]) {
+            cnt=i;
+            break;
+        }
+    }
+
+    return min((ll)a.size()+(ll)b.size(), (ll)a.size()+(ll)b.size()-cnt+1);
 }
 
 int main() {

@@ -12,7 +12,15 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
-    return 0;
+    ll n,sum=0,x,M=0;
+    cin >> n >> x;
+    for (ll i = 0; i < n; i++) {
+        ll y; cin >> y;
+        sum += y;
+        M=max(M,y);
+    }
+
+    return max((sum+x-1)/x, M);
 }
 
 int main() {
