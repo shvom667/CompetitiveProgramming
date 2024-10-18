@@ -7,8 +7,10 @@ using Vec = vector<T>;
  
 #ifndef ONLINE_JUDGE
     #include"/home/shivom/Downloads/CP/DataStructures/debug.cpp"
+    #include"/home/shivom/Downloads/CP/DataStructures/random_gen.cpp"
 #else
     #define dbg(...) 42
+    #define rnd(...) 42
 #endif
  
 auto solve() {
