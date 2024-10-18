@@ -12,7 +12,21 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
-    return 0;
+    string s;
+    cin >> s;
+    ll fans = 0;
+    ll n = s.size();
+    ll cnt = 0;
+    for (ll i = 0; i < n; i++) {
+        if (s[i] == '0') {
+            fans += i - cnt + 1;
+            if (i - cnt + 1 == 1) {
+                fans--;
+            }
+            cnt++;
+        }
+    }
+    return fans;
 }
 
 int main() {

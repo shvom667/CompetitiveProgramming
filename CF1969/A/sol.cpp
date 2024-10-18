@@ -12,6 +12,23 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
+    ll n;
+    cin >> n;
+    vector<ll> p (n + 1);
+    for (ll i = 1; i <= n; i++) {
+        cin >> p[i];
+    }
+    for (ll i = 1; i <= n; i++) {
+        for (ll j = i + 1; j <= n; j++) {
+            if (p[i] == j &&  p[j] == i) {
+                return 2;
+            }
+        }
+    }
+
+    return 3;
+
+    return 4;
     return 0;
 }
 
