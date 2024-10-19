@@ -41,7 +41,8 @@ auto solve() {
         cin >> O[i] >> L[i] >> R[i];
     }
 
-    ll up[N + 1][B];
+    // ll up[N + 1][B];
+    vector<vector<ll>> up(N + 1, vector<ll> (B, 0));
 
     for (ll i = 0; i < B; i++) {
         up[0][i] = 0;
@@ -51,12 +52,26 @@ auto solve() {
         up[i][0] = par[i];
     }
 
+//    Vec<ll> final = {2, 1, 3, 1, 1, 2, 0, 2, 0, 1 };
+//     for (auto& x : final) {
+//         cout << x << " ";   
+//     }   cout << '\n';
+//     return;
+
     for (ll i = 1; i <= N; i++) {
         for (ll j = 1; j < B; j++) {
+            if (up[i][j-1] > N || up[i][j-1] < 0) {
+                up[i][j-1] = 0;
+            }
             up[i][j] = up[up[i][j-1]][j-1];
         }
     }
 
+//    Vec<ll> final = {2, 1, 3, 1, 1, 2, 0, 2, 0, 1 };
+//     for (auto& x : final) {
+//         cout << x << " ";   
+//     }   cout << '\n';
+//     return;
 
     auto get = [&] (ll node, ll val) {
         for (ll bit = B-1; bit >= 0; bit--) {
@@ -73,7 +88,7 @@ auto solve() {
     vector<ll> upd(N + 1, 0);
 
     vector<ll> lval[N + 1];
-
+ 
     for (ll i = 0; i < M; i++) {
 
         if (R[i] >= age[1]) {
@@ -132,9 +147,17 @@ auto solve() {
         fans[i] += cur;
     }
 
+    // Vec<ll> final = {2, 1, 3, 1, 1, 2, 0, 2, 0, 1 };
+    // for (auto& x : final) {
+    //     cout << x << " ";   
+    // }   cout << '\n';
+    // return;
+
     for (ll i = 1; i <= N; i++) {
         cout << fans[i] << " ";
     }   cout << "\n";
+
+
 }
 
 int main() {

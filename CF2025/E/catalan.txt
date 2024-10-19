@@ -1,0 +1,14 @@
+You are given n numbers from 1 to n
+1 2 3 4 .. .n
+-> n is even
+
+Make 2 different sets of numbers (and keep them sorted)
+x1 x2 .. x_n/2  y1 y2 ... y_n/2
+
+each of 1 to n is exactly in one set
+
+such a pair of set is called good if  x_i < y_i for all i [1..n/2]
+
+the result is the n / 2 th catalan number
+
+1 2 5 14 42 ...

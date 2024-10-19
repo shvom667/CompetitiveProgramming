@@ -384,85 +384,102 @@ FactorialTable<Mint> table(N + 1);
 // ============
 
 Mint f[N];
+Mint getf (ll x) {
+    if (x > N) {
+        return Mint(0);
+    }
+    if (x < 0) {
+        return Mint(0);
+    }
+    return f[x];
+}
+void __print(Mint x){
+    cerr<<x;
+}
 
 auto solve()
 {
     ll n, m;
     cin >> n >> m;
-    Mint dp[n][m + 1];
-    for (ll ol = 0; ol <= m; ol += 2)
-    {
-        dp[0][ol] += f[m - ol];
+
+    Mint sol[m + 1][m + 1];
+  
+    sol[1][1] = 1;
+
+    for (ll i = 0; i <= m; i+=2) {
+      sol[i][0] = f[i];
+      //sol[i + 1][1] = f[i];
     }
-    for (ll i = 1; i < n; i++)
-    {
-        for (ll ol = 0; ol <= m; ol += 2)
-        {
-            for (ll x = 0; x <= ol; x += 2)
-            {
-                dp[i][ol] += dp[i - 1][ol - x] * f[m - x] * table.choose(m, m - x);
+
+    for (ll i = 2; i <= m; i++) {
+      for (ll x = 1; x <= i; x++) {
+        for (ll r = x; r <= i; r++) {
+          if (i % 2 == x % 2) {
+            Mint cur = table.choose(r - 1, x - 1) * sol[i - r][r - x];
+            if (i == 6 && x == 2 ){
+              dbg(r-1,x-1);
+              dbg(i -r , r - x);
+              dbg(cur);
+            }
+            sol[i][x] += cur;
+          }
+        }
+      }
+    }
+
+    if (false) {
+      dbg(sol[0][2]);
+      dbg(sol[1][1]);
+      dbg(sol[0][0]); 
+      dbg(sol[2][0]); 
+      dbg(sol[3][0]);
+      dbg(sol[4][0]); 
+      dbg(sol[3][1]);
+    }
+
+    if (false) {
+      dbg(sol[2][2]); 
+      dbg(sol[4][2]); 
+      dbg(sol[6][2]);
+    }
+
+    if (true) {
+      dbg(sol[4][0]); 
+      dbg(sol[3][1]); 
+      dbg(sol[2][2]); 
+      dbg(sol[1][3]); 
+      dbg(sol[0][4]); 
+      
+      dbg(sol[6][2]);
+      
+    }
+
+
+    Mint dp[n + 1][m + 1];
+
+    for (ll j = 0; j <= m; j+=2) {
+        dp[0][j] = sol[m][j];
+    }
+    for (ll i = 1; i <= n; i++) {
+        for (ll j = 0; j <= m; j+=2) {
+            for (ll x = 0; x <= j; x+=2) {
+                dp[i][j] += dp[i - 1][j - x] * sol[m][x];
             }
         }
     }
+
     Mint fans = 0;
-    if (n == 1)
-    {
-        return dp[0][0].get_val();
-    }
-    for (ll k = 0; k <= m / 2; k += 1)
-    {
-        // fans += table.choose(m,2*k)*f[2*k]* table.choose(m*n-m,m- 2 * k) * dp[n - 2][m - 2 * k];
-        // fans += table.choose(m, 2 * k) * table.fact(m-2*k) * f[2 * k] * dp[n - 2][m - 2 * k];
-        fans += table.choose(m, 2 * k) * f[2 * k] * dp[n - 2][m - 2 * k];
-        dbg(dp[n-2][m-2*k].get_val());
-        // dbg(table.choose(m, 2 * k).get_val());
 
-        dbg(fans.get_val());
+    if (n == 1) {
+        return getf(m).get_val();
     }
+
+    for (ll k = 0; k <= m / 2; k ++) {
+        fans += sol[m][m - 2 * k] * dp[n - 2][m - 2 * k];
+    }
+
     return fans.get_val();
-}
 
-auto bf()
-{
-    for (ll m = 2; m <= 20; m += 2)
-    {
-        vector<ll> x(m);
-        for (ll i = 0; i < m; i++)
-        {
-            x[i] = i + 1;
-        }
-        ll fans = 0;
-        for (ll i = 0; i < (1ll << m); i++)
-        {
-            if (!(__builtin_popcount(i) == m / 2))
-                continue;
-            vector<ll> a, b;
-            for (ll bit = 0; bit < m; bit++)
-            {
-                if (i & (1ll << bit))
-                {
-                    a.pb(x[bit]);
-                }
-                else
-                {
-                    b.pb(x[bit]);
-                }
-            }
-            bool ok = true;
-            for (ll i = 0; i < a.size(); i++)
-            {
-                if (a[i] > b[i])
-                {
-                    ok = false;
-                }
-            }
-            if (ok)
-            {
-                fans++;
-            }
-        }
-        dbg(m, fans);
-    }
 }
 int main()
 {
@@ -470,15 +487,7 @@ int main()
     {
         f[i] = table.choose(i, i / 2) / (i / 2 + 1);
     }
-    for (ll i = 2; i <= 10; i+= 2) {
-        dbg(i, f[i].get_val());
-    }
-        // cout <<f[i] << " ";
-    // }   cout << '\n';
-
-    // bf();
-    // exit(0);
-    dbg(f[0].get_val());
+    
     ll T;
     T = 1;
     for (ll tc = 1; tc <= T; tc++)

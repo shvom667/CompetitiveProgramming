@@ -1,0 +1,99 @@
+my.cpp: In function ‘auto solve()’:
+my.cpp:413:35: error: ‘r’ was not declared in this scope
+  413 |         sol[i][x] += table.choose(r - 1, x - 1) * sol[m - r][r - x];
+      |                                   ^
+my.cpp:441:32: error: no match for ‘operator*’ (operand types are ‘Mint [(m + 1)]’ {aka ‘ModInt<998244353> [(m + 1)]’} and ‘Mint’ {aka ‘ModInt<998244353>’})
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                 ~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~~~~
+      |                              |                      |
+      |                              |                      Mint {aka ModInt<998244353>}
+      |                              Mint [(m + 1)] {aka ModInt<998244353> [(m + 1)]}
+In file included from /usr/include/c++/13/ccomplex:39,
+                 from /usr/include/x86_64-linux-gnu/c++/13/bits/stdc++.h:127,
+                 from my.cpp:1:
+/usr/include/c++/13/complex:395:5: note: candidate: ‘template<class _Tp> std::complex<_Tp> std::operator*(const complex<_Tp>&, const complex<_Tp>&)’
+  395 |     operator*(const complex<_Tp>& __x, const complex<_Tp>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/13/complex:395:5: note:   template argument deduction/substitution failed:
+my.cpp:441:53: note:   mismatched types ‘const std::complex<_Tp>’ and ‘Mint [(m + 1)]’ {aka ‘ModInt<998244353> [(m + 1)]’}
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                                                     ^
+/usr/include/c++/13/complex:404:5: note: candidate: ‘template<class _Tp> std::complex<_Tp> std::operator*(const complex<_Tp>&, const _Tp&)’
+  404 |     operator*(const complex<_Tp>& __x, const _Tp& __y)
+      |     ^~~~~~~~
+/usr/include/c++/13/complex:404:5: note:   template argument deduction/substitution failed:
+my.cpp:441:53: note:   mismatched types ‘const std::complex<_Tp>’ and ‘Mint [(m + 1)]’ {aka ‘ModInt<998244353> [(m + 1)]’}
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                                                     ^
+/usr/include/c++/13/complex:413:5: note: candidate: ‘template<class _Tp> std::complex<_Tp> std::operator*(const _Tp&, const complex<_Tp>&)’
+  413 |     operator*(const _Tp& __x, const complex<_Tp>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/13/complex:413:5: note:   template argument deduction/substitution failed:
+my.cpp:441:53: note:   variable-sized array type ‘Mint [(m + 1)]’ {aka ‘ModInt<998244353> [(m + 1)]’} is not a valid template argument
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                                                     ^
+In file included from /usr/include/c++/13/valarray:605,
+                 from /usr/include/x86_64-linux-gnu/c++/13/bits/stdc++.h:166:
+/usr/include/c++/13/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const _Expr<_Dom2, typename _Dom2::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/13/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+my.cpp:441:53: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘Mint [(m + 1)]’ {aka ‘ModInt<998244353> [(m + 1)]’}
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                                                     ^
+/usr/include/c++/13/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/13/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+my.cpp:441:53: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘Mint [(m + 1)]’ {aka ‘ModInt<998244353> [(m + 1)]’}
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                                                     ^
+/usr/include/c++/13/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const typename _Dom::value_type&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/13/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+my.cpp:441:53: note:   ‘Mint’ {aka ‘ModInt<998244353>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                                                     ^
+/usr/include/c++/13/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const _Expr<_Dom1, typename _Dom1::value_type>&, const valarray<typename _Dom::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/13/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+my.cpp:441:53: note:   mismatched types ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’ and ‘Mint [(m + 1)]’ {aka ‘ModInt<998244353> [(m + 1)]’}
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                                                     ^
+/usr/include/c++/13/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const valarray<typename _Dom::value_type>&, const _Expr<_Dom1, typename _Dom1::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/13/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+my.cpp:441:53: note:   ‘Mint’ {aka ‘ModInt<998244353>’} is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                                                     ^
+/usr/include/c++/13/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const valarray<_Tp>&, const valarray<_Tp>&)’
+ 1198 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/13/valarray:1198:1: note:   template argument deduction/substitution failed:
+my.cpp:441:53: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘Mint [(m + 1)]’ {aka ‘ModInt<998244353> [(m + 1)]’}
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                                                     ^
+/usr/include/c++/13/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const valarray<_Tp>&, const typename valarray<_Tp>::value_type&)’
+ 1198 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/13/valarray:1198:1: note:   template argument deduction/substitution failed:
+my.cpp:441:53: note:   mismatched types ‘const std::valarray<_Tp>’ and ‘Mint [(m + 1)]’ {aka ‘ModInt<998244353> [(m + 1)]’}
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                                                     ^
+/usr/include/c++/13/valarray:1198:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const typename valarray<_Tp>::value_type&, const valarray<_Tp>&)’
+ 1198 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/13/valarray:1198:1: note:   template argument deduction/substitution failed:
+my.cpp:441:53: note:   ‘Mint’ {aka ‘ModInt<998244353>’} is not derived from ‘const std::valarray<_Tp>’
+  441 |         fans += sol[m - 2 * k] * dp[n - 2][m - 2 * k];
+      |                                                     ^
+my.cpp:226:29: note: candidate: ‘constexpr ModInt<998244353> operator*(const ModInt<998244353>&, const ModInt<998244353>&)’
+  226 |     friend constexpr ModInt operator*(const ModInt &lhs, const ModInt &rhs)
+      |                             ^~~~~~~~
+my.cpp:226:53: note:   no known conversion for argument 1 from ‘Mint [(m + 1)]’ {aka ‘ModInt<998244353> [(m + 1)]’} to ‘const ModInt<998244353>&’
+  226 |     friend constexpr ModInt operator*(const ModInt &lhs, const ModInt &rhs)
+      |                                       ~~~~~~~~~~~~~~^~~
+make: *** [<builtin>: my] Error 1
