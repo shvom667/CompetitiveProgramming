@@ -1,10 +1,11 @@
 #include<bits/stdc++.h>
 using namespace std;
-using ll=long long;
+using ll=int;
 #define pb push_back
 template <typename T>
 using Vec = vector<T>;
- 
+
+// #define ONLINE_JUDGE
 #ifndef ONLINE_JUDGE
     #include"/home/shivom/Downloads/CP/DataStructures/debug.cpp"
     #include"/home/shivom/Downloads/CP/DataStructures/random_gen.cpp"
@@ -13,71 +14,111 @@ using Vec = vector<T>;
     #define rnd(...) 42
 #endif
 #define ALL(x) begin(x), end(x)
-auto solve() {
-    ll r, c, K;
+long long solve() {
+    ll r, c;
+    long long K;
     cin >> r >> c >> K;
     vector<vector<ll>> g(r, vector<ll> (c, 0));
-    vector<ll> row[r*c][r];
-    vector<ll> col[r*c][c];
+    
+    // cout << r << " " << c << " " <<  K << "\n";
+
+
     for (ll i = 0; i < r; i++) {
         for (ll j = 0; j < c; j++) {
             cin >> g[i][j];
+            // if (i == 0 && j == 0) {
+            //     dbg(g[0][0]);
+            // }
             g[i][j]--;
-            row[g[i][j]][i].push_back(j);
         }
     }
-    for (ll j = 0; j < c; j++) {
+    
+
+    vector<ll> fans(r + c + 1, 0);
+    
+
+    for (ll id = 0; id < r; id++) {
+        dbg(id);
+        vector<ll> cur_row[r*c];
+        
+        for (ll j = 0; j < c; j++) {
+            cur_row[g[id][j]].push_back(j);
+        } 
+        
+
+        for (ll i = id + 1; i < r; i++) {
+            ll k = i - id;
+            for (ll j = 0; j < c; j++) {
+                ll l, rr;
+                l = j - k + 1, rr = j + k - 1;
+                l = max(0, l);
+                rr = min(rr, c-1);
+                ll len = rr - l + 1;
+                if (len > 0) {
+                    ll eq = upper_bound(ALL(cur_row[g[i][j]]), rr)-lower_bound(ALL(cur_row[g[i][j]]), l);
+                    fans[k] += len - eq;
+                }
+            }
+        }
+        for (ll i = id - 1; i >= 0; i--) {
+            ll k = id - i;
+            for (ll j = 0; j < c; j++) {
+                ll l, rr;
+                l = j - k + 1, rr = j + k - 1;
+                l = max(0, l);
+                rr = min(rr, c-1);
+                ll len = rr - l + 1;
+                if (len > 0) {
+                    ll eq = upper_bound(ALL(cur_row[g[i][j]]), rr)-lower_bound(ALL(cur_row[g[i][j]]), l);
+                    fans[k] += len - eq;
+                }
+            }
+        }
+    }
+    
+
+
+    for (ll  jd = 0; jd < c; jd++) {
+        // vector<vector<ll>> cur_col(r * c);
+        vector<ll> cur_col[r*c];
+        dbg(jd);
+
         for (ll i = 0; i < r; i++) {
-            col[g[i][j]][j].push_back(i);
+            cur_col[g[i][jd]].push_back(i);
         }
-    }
-    vector<ll> fans(r+c, 0);
-    for (ll i = 0; i < r; i++) {
-        for (ll j = 0; j < c; j++) {
-            for (ll k = 1; i - k >= 0; k++) {
-                ll l, rr;
-                l = j - k + 1, rr = j + k - 1;
-                l = max(0ll, l);
-                rr = min(rr, c-1);
-                ll len = rr - l + 1;
-                ll eq = upper_bound(ALL(row[g[i][j]][i-k]), rr+1)-upper_bound(ALL(row[g[i][j]][i-k]), l);
-                fans[k] += len - eq;
-            }
-            for (ll k = 1; i + k < r; k++) {
-                ll l, rr;
-                l = j - k + 1, rr = j + k - 1;
-                l = max(0ll, l);
-                rr = min(rr, c-1);
-                ll len = rr - l + 1;
-                ll eq = upper_bound(ALL(row[g[i][j]][i+k]), rr+1)-upper_bound(ALL(row[g[i][j]][i+k]), l);
-                fans[k] += len - eq;
-            }
-        }
-    }
-    dbg(fans);
-    for (ll i = 0; i < r; i++) {
-        for (ll j = 0; j < c; j++) {
-            for (ll k = 1; j - k >= 0; k++) {
+        for (ll j = jd + 1; j < c; j++) {
+            ll k = j - jd;
+            for (ll i = 0; i < r; i++) {
                 ll l, rr;
                 l = i - k + 1, rr = i + k - 1;
-                l = max(0ll, l);
+                l = max(0, l);
                 rr = min(rr, r-1);
                 ll len = rr - l + 1;
-                ll eq = upper_bound(ALL(col[g[i][j]][j-k]), rr+1)-upper_bound(ALL(col[g[i][j]][j-k]), l);
-                fans[k] += len - eq;
+                if (len > 0) {
+                    ll eq = upper_bound(ALL(cur_col[g[i][j]]), rr)-lower_bound(ALL(cur_col[g[i][j]]), l);
+                    fans[k] += len - eq;
+                }
+
             }
-            for (ll k = 1; j + k < c; k++) {
+        }
+        for (ll j = jd - 1; j >= 0; j--) {
+            ll k = jd - j;
+            for (ll i = 0; i < r; i++) {
                 ll l, rr;
-                l = j - k + 1, rr = j + k - 1;
-                l = max(0ll, l);
+                l = i - k + 1, rr = i + k - 1;
+                l = max(0, l);
                 rr = min(rr, r-1);
                 ll len = rr - l + 1;
-                ll eq = upper_bound(ALL(col[g[i][j]][j+k]), rr+1)-upper_bound(ALL(col[g[i][j]][j+k]), l);
-                fans[k] += len - eq;
+                if (len > 0) {
+                    ll eq = upper_bound(ALL(cur_col[g[i][j]]), rr)-lower_bound(ALL(cur_col[g[i][j]]), l);
+                    
+                    fans[k] += len - eq;
+                }
+
             }
         }
     }
-    dbg(fans);
+
     for (ll i = 0; i < r; i++) {
         for (ll j = 0; j < c; j++) {
             for (ll k = 1; k <= max(r,c); k++) {
@@ -104,20 +145,18 @@ auto solve() {
             }
         }
     }
-    dbg(fans);
-    ll sum = 0;
-    for (ll i = 1; i <= max(r,c); i++) {
+    
+    long long sum = 0;
+    for (ll i = 1; i <= r + c; i++) {
         sum += fans[i];
         if (sum >= K) {
             return i;
         }
     }  
-    return -1ll;
+    return -1;
 }
 
-int main() {
-	ios_base::sync_with_stdio(0);cin.tie(0);       
-
+signed main() {
     ll T;
     cin >> T;
     for (ll tc = 1; tc <= T; tc++) {
