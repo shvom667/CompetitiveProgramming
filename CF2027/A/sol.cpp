@@ -14,7 +14,17 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
-    return 0;
+    ll n;
+    cin >> n;
+    ll X, Y;
+    X = Y = 0;
+    while (n--) {
+        ll x,y;
+        cin >> x >> y;
+        X = max(x, X);
+        Y = max(y, Y);
+    }
+    return 2 * (X + Y);
 }
 
 int main() {

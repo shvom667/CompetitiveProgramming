@@ -14,7 +14,23 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
-    return 0;
+    ll n;
+    cin >> n;
+    ll a[n];
+    for (ll i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    ll fans = 1e9;
+    for (ll s = 0; s < n; s++) {
+        ll cur = s;
+        for (ll j = s + 1; j < n; j++) {
+            if (a[j] > a[s]) {
+                cur++;
+            }
+        }
+        fans = min(fans, cur);
+    }
+    return fans;
 }
 
 int main() {
