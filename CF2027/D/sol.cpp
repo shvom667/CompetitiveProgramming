@@ -48,8 +48,10 @@ auto solve() {
 
     vector<vector<ll>> dp(m, vector<ll> (n, INF));
 
-    for (ll i = 0; i < m; i++) {
+    for (ll i = m - 1; i >= 0; i--) {
         dp[i][n - 1] = (b[i] >= a[n - 1] ? m - (i + 1) : INF);
+        if (i + 1 < m)
+            dp[i][n - 1] = min(dp[i][n-1], dp[i + 1][n - 1]);
     }
     for (ll j = 0; j < n; j++) {
         dp[m - 1][j] = (b[m - 1] >= smax[j] ? m - (m - 1 + 1) : INF);
@@ -57,13 +59,17 @@ auto solve() {
 
     Vec<ll> minv(n, INF);
     for (ll i = n - 1; i >= 0; i--) {
-        for (ll j = m - 1; j >= 0; j--) {
+        for (ll j = m - 1; j >= m - 1; j--) {
             minv[i] = min(minv[i], dp[j][i]);
         }
     }
 
-    for (ll j = n - 2; j >= 0; j--) {
+    // dbg(md[3][0]);
+
+    dbg(minv);
+    dbg("hello");
         for (ll i = m - 2; i >= 0; i--) {
+    for (ll j = n - 1; j >= 0; j--) {
             ll k = md[i][j];
             if (k < j) continue;
             ll cur = INF;
@@ -73,22 +79,40 @@ auto solve() {
                 cur = 0;
             }
             cur += m - (i + 1);
+            if (i == 0 && j == 0){
+                dbg(i, j, minv);
+            }
             dp[i][j] = min(dp[i][j] , cur);
+            dp[i][j] = min(dp[i][j], dp[i + 1][j]);
+            minv[j] = min(minv[j], dp[i][j]);
+            if (i == 0 && j == 1 ) {
+                dbg(i, j, dp[i][j], minv);
+            }
+            dbg(j, i, minv);
+        }
+        for (ll j = 0; j < n; j++) {
             minv[j] = min(minv[j], dp[i][j]);
         }
     }
-
+    dbg(md[1][0]);
     ll fans = INF;
     for (ll i = 0; i < m; i++) {
         fans = min(fans, dp[i][0]);
     }
+    // for (ll i = 0; i < m; i++) {
+    //     for (ll j = 0; j < n; j++) {
+    //         cout << dp[i][j] << " ";
+    //     }   cout << "\n";
+    // }
     return (fans >= INF ? -1ll : fans);
+
 }
 
 int main() {
 	ios_base::sync_with_stdio(0);cin.tie(0);       
 
-    ll T;
+    ll T;   
+    T = 1;
     cin >> T;
     for (ll tc = 1; tc <= T; tc++) {
         auto res = solve();
