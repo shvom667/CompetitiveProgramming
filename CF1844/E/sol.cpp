@@ -88,11 +88,19 @@ string bf(ll n, ll m, ll k, vector<ll> x1, vector<ll> y1, vector<ll> x2, vector<
                     }
                 }
             }
-            for (ll itr=0;itr<k;itr++){
-                if(g[x1[itr]-1][y1[itr]-1] != g[x2[itr]-1][y2[itr]-1]) ok=false;
-            }
+            // for (ll itr=0;itr<k;itr++){
+            //     if(g[x1[itr]-1][y1[itr]-1] != g[x2[itr]-1][y2[itr]-1]) ok=false;
+            // }
             if (ok) {
+                for (ll i = 0; i < g.size(); i++) 
+                {
+                    for (ll j = 0; j < g[i].size(); j++)
+                    {
+                        cout << g[i][j];     
+                    }   cout << "\n";
+                }
                 S.insert(g);
+                cout << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4\n";
                 res="YES";
             }
             return;
@@ -106,38 +114,38 @@ string bf(ll n, ll m, ll k, vector<ll> x1, vector<ll> y1, vector<ll> x2, vector<
     };
     dfs(0,0);
     cout << S.size() << '\n';
-    // for (auto&gr:S){
-    //     for (ll i = 0; i < n; i++) {
-    //         for (ll j = 0; j < m; j++) {
-    //             cout << gr[i][j];
-    //         }   cout << "\n";
-    //     }
-    //     cout << "$$$$$$$$$$$$$$$$$$\n";
-    // }
-    // for (auto& gr: S) {
-    //     int p[3][2];
-    //     for (ll i = 0; i < 3; i++) for (ll j = 0; j < 2; j++) p[i][j] = 0;
-    //     for (ll i = 0; i < n; i++) {
-    //         for (ll j = 0; j < m; j++) {
-    //             p[gr[i][j]-'A'][(i+j)%2]++;
-    //         }      
-    //     }
-    //     bool ok=false;
-    //     for (ll i = 0; i < 3; i++) {
-    //         if (p[i][0]==0 || p[i][1] == 0) {
-    //             ok=true;
-    //         }
-    //     }
-    //     if (!ok) {
-    //         for (ll i = 0; i  < n; i++) {
-    //             for (ll j = 0; j < m; j++) {
-    //                 cout << gr[i][j] << " ";
-    //             }cout<<'\n';
-    //         }
-    //         exit(0);
-    //     }
-    //     cout << "$$$$$$$$$$$$$$$$$$\n";
-    // }
+    for (auto&gr:S){
+        for (ll i = 0; i < n; i++) {
+            for (ll j = 0; j < m; j++) {
+                cout << gr[i][j];
+            }   cout << "\n";
+        }
+        cout << "$$$$$$$$$$$$$$$$$$\n";
+    }
+    for (auto& gr: S) {
+        int p[3][2];
+        for (ll i = 0; i < 3; i++) for (ll j = 0; j < 2; j++) p[i][j] = 0;
+        for (ll i = 0; i < n; i++) {
+            for (ll j = 0; j < m; j++) {
+                p[gr[i][j]-'A'][(i+j)%2]++;
+            }      
+        }
+        bool ok=false;
+        for (ll i = 0; i < 3; i++) {
+            if (p[i][0]==0 || p[i][1] == 0) {
+                ok=true;
+            }
+        }
+        if (!ok) {
+            for (ll i = 0; i  < n; i++) {
+                for (ll j = 0; j < m; j++) {
+                    cout << gr[i][j] << " ";
+                }cout<<'\n';
+            }
+            exit(0);
+        }
+        cout << "$$$$$$$$$$$$$$$$$$\n";
+    }
     ll gmax=0;
     for (auto&gr : S) {
         ll lmax=0;
