@@ -124,39 +124,6 @@ auto solve() {
 
         prev_val = cur_min;
         fans.pb(cur_min);
-
-        /*
-        set<ll> ngjs;
-
-        for (auto j : gjs) {
-            ll cur_ans = prev_val;
-            ll upd = 0;
-            ll L = 0, R = G[i].size()-1;
-            while (L <= R) {
-                ll mid = L + (R - L) / 2;
-                if (G[i][mid].second <= j) {
-                    L = mid + 1;
-                } else {
-                    R = mid - 1;
-                }
-            }
-            if (R < G[i].size())
-                upd = G[i][R].first;
-            cur_ans += upd;
-            dbg(j, R);
-            if (cur_ans == cur_min) {
-                ngjs.insert(j);
-            } else {
-                bjs.insert(j);
-            }
-        }
-
-        gjs = ngjs;
-        prev_val = cur_min;
-        fans.pb(cur_min);
-        dbg("after", gjs);
-        */
-
     }
 
     for (ll i = 0; i < n; i++) {
