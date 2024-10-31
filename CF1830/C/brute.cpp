@@ -48,6 +48,8 @@ int main() {
     fans %= M;
   }
 
+  
+
   cout << fans << "\n";
   return 0;
 }
