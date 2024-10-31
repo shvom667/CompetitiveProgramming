@@ -12,6 +12,7 @@ using Vec = vector<T>;
     #define dbg(...) 42
     #define rnd(...) 42
 #endif
+
  
 auto solve() {
     return 0;
