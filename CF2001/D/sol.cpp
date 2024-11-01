@@ -1,274 +1,215 @@
 #include<bits/stdc++.h>
 using namespace std;
-using ll = long long;
+using ll=long long;
+using i64 = long long;
 #define pb push_back
+template <typename T>
+using Vec = vector<T>;
 
-// Debugging template
-void __print(int x) { cerr << x; }
-void __print(long x) { cerr << x; }
-void __print(long long x) { cerr << x; }
-void __print(unsigned x) { cerr << x; }
-void __print(unsigned long x) { cerr << x; }
-void __print(unsigned long long x) { cerr << x; }
-void __print(float x) { cerr << x; }
-void __print(double x) { cerr << x; }
-void __print(long double x) { cerr << x; }
-void __print(char x) { cerr << '\'' << x << '\''; }
-void __print(const char *x) { cerr << '\"' << x << '\"'; }
-void __print(const string &x) { cerr << '\"' << x << '\"'; }
-void __print(bool x) { cerr << (x ? "true" : "false"); }
-template <typename A>
-void __print(const A &x);
-template <typename A, typename B>
-void __print(const pair<A, B> &p);
-template <typename... A>
-void __print(const tuple<A...> &t);
-template <typename T>
-void __print(stack<T> s);
-template <typename T>
-void __print(queue<T> q);
-template <typename T, typename... U>
-void __print(priority_queue<T, U...> q);
-/*
-void __print(Mint x) {
-    cerr << x;
-}
-*/
-template <typename A>
-void __print(const A &x) {
-    bool first = true;
-    cerr << '{';
-    for (const auto &i : x) {
-        cerr << (first ? "" : ","), __print(i);
-        first = false;
-    }
-    cerr << '}';
-}
-template <typename A, typename B>
-void __print(const pair<A, B> &p) {
-    cerr << '(';
-    __print(p.first);
-    cerr << ',';
-    __print(p.second);
-    cerr << ')';
-}
-template <typename... A>
-void __print(const tuple<A...> &t) {
-    bool first = true;
-    cerr << '(';
-    apply([&first](const auto & ...args) { ((cerr << (first ? "" : ","), __print(args), first = false), ...); }, t);
-    cerr << ')';
-}
-template <typename T>
-void __print(stack<T> s) {
-    vector<T> debugVector;
-    while (!s.empty()) {
-        T t = s.top();
-        debugVector.push_back(t);
-        s.pop();
-    }
-    reverse(debugVector.begin(), debugVector.end());
-    __print(debugVector);
-}
-template <typename T>
-void __print(queue<T> q) {
-    vector<T> debugVector;
-    while (!q.empty()) {
-        T t = q.front();
-        debugVector.push_back(t);
-        q.pop();
-    }
-    __print(debugVector);
-}
-template <typename T, typename... U>
-void __print(priority_queue<T, U...> q) {
-    vector<T> debugVector;
-    while (!q.empty()) {
-        T t = q.top();
-        debugVector.push_back(t);
-        q.pop();
-    }
-    __print(debugVector);
-}
-void _print() { cerr << "]\n"; }
-template <typename Head, typename... Tail>
-void _print(const Head &H, const Tail &...T) {
-    __print(H);
-    if (sizeof...(T))
-        cerr << ", ";
-    _print(T...);
-}
+#define ONLINE_JUDGE
 #ifndef ONLINE_JUDGE
-#define dbg(...) cerr << "Line:" << __LINE__ << " [" << #__VA_ARGS__ << "] = ["; _print(__VA_ARGS__)
+    #include"/home/shivom/Downloads/CP/DataStructures/debug.cpp"
+    #include"/home/shivom/Downloads/CP/DataStructures/random_gen.cpp"
 #else
-#define dbg(...)
+    #define dbg(...) 42
+    #define rnd(...) 42
 #endif
 
-struct cs {
-    bool operator() (pair<ll,ll> a, pair<ll,ll> b) const {
-        if (a.first < b.first) return true;
-        if (a.first > b.first) return false;
-        if (a.first == b.first) {
-			return a.second < b.second;
+
+// ============
+
+template<class T, class U>
+// T -> node, U->update.
+struct Lsegtree { // add on a range & sum on a range
+	vector<T>st;
+	vector<U>lazy;
+	ll n;
+	T identity_element;
+	U identity_update;
+	Lsegtree(ll n, T identity_element, U identity_update) {
+		this->n = n;
+		this->identity_element = identity_element;
+		this->identity_update = identity_update;
+		st.assign(4 * n, identity_element);
+		lazy.assign(4 * n, identity_update);
+	}
+	T combine(T l, T r) {
+		// change this function as required.
+		T ans = (l + r);
+		return ans;
+	}
+	void buildUtil(ll v, ll tl, ll tr, vector<T>&a) {
+		if (tl == tr) {
+			st[v] = a[tl];
+			return;
 		}
-    }
-};
-struct cg {
-    bool operator() (pair<ll,ll> a, pair<ll,ll> b) const {
-        if (a.first > b.first) return true;
-        if (a.first < b.first) return false;
-        if (a.first == b.first) {
-			return a.second < b.second;
+		ll tm = (tl + tr) >> 1;
+		buildUtil(2 * v + 1, tl, tm, a);
+		buildUtil(2 * v + 2, tm + 1, tr, a);
+		st[v] = combine(st[2 * v + 1], st[2 * v + 2]);
+	}
+	// change the following 2 functions, and you're more or less done.
+	T apply(T curr, U upd, ll tl, ll tr) {
+		T ans = curr;
+		ans += (tr - tl + 1) * upd;
+		return ans;
+	}
+	U combineUpdate(U old_upd, U new_upd, ll tl, ll tr) {
+		U ans = old_upd;
+		ans += new_upd;
+		return ans;
+	}
+	void push_down(ll v, ll tl, ll tr) {
+		if (lazy[v] == identity_update)return;
+		st[v] = apply(st[v], lazy[v], tl, tr);
+		if (2 * v + 2 < 4 * n) {
+			ll tm = (tl + tr) >> 1;
+			lazy[2 * v + 1] = combineUpdate(lazy[2 * v + 1], lazy[v], tl, tm);
+			lazy[2 * v + 2] = combineUpdate(lazy[2 * v + 2], lazy[v], tm + 1, tr);
 		}
-    }
+		lazy[v] = identity_update;
+	}
+	T queryUtil(ll v, ll tl, ll tr, ll l, ll r) {
+		push_down(v, tl, tr);
+		if (l > r)return identity_element;
+		if (tr < l or tl > r) {
+			return identity_element;
+		}
+		if (l <= tl and r >= tr) {
+			return st[v];
+		}
+		ll tm = (tl + tr) >> 1;
+		return combine(queryUtil(2 * v + 1, tl, tm, l, r), queryUtil(2 * v + 2, tm + 1, tr, l, r));
+	}
+
+	void updateUtil(ll v, ll tl, ll tr, ll l, ll r, U upd) {
+		push_down(v, tl, tr);
+		if (tr < l or tl > r)return;
+		if (tl >= l and tr <= r) {
+			lazy[v] = combineUpdate(lazy[v], upd, tl, tr);
+			push_down(v, tl, tr);
+		} else {
+			ll tm = (tl + tr) >> 1;
+			updateUtil(2 * v + 1, tl, tm, l, r, upd);
+			updateUtil(2 * v + 2, tm + 1, tr, l, r, upd);
+			st[v] = combine(st[2 * v + 1], st[2 * v + 2]);
+		}
+	}
+
+
+
+	void build(vector<T>a) {
+		assert((i64)a.size() == n);
+		buildUtil(0, 0, n - 1, a);
+	}
+	T query(ll l, ll r) {
+		return queryUtil(0, 0, n - 1, l, r);
+	}
+	void update(ll l, ll r, U upd) {
+		updateUtil(0, 0, n - 1, l, r, upd);
+	}
 };
 
-void test() {
-	set<pair<ll,ll>, cs> ms;
-	set<pair<ll,ll>, cg> mg;
-	
-	ms.insert({1,2});
-	ms.insert({1,3});
-	ms.insert({1,4});
-	ms.insert({2,5});
-	ms.insert({2,0});
-	ms.insert({2,6});
-	
-	
-	mg.insert({1,2});
-	mg.insert({1,3});
-	mg.insert({1,4});
-	mg.insert({2,5});
-	mg.insert({2,0});
-	mg.insert({2,6});
-	
-	for (auto&[a,b]:ms){
-		cout << a << " " << b << "\n";
+auto solve() {
+	ll n;
+	cin >> n;
+	vector<ll> a(n + 1, 0), d(n + 1, 0), lp(n + 1, -1);
+	for (ll i = 1; i <= n; i++) {
+		cin >> a[i];
 	}
-	cout << "\n";
-	
-	for (auto&[a,b]:mg){
-		cout << a << " " << b << "\n";
+	for (ll i = 1; i <= n; i++) {
+		lp[a[i]] = i;
 	}
-	cout << "\n";
-}
-
-auto solve(ll n, vector<ll> a) {
-	set<pair<ll,ll>, cs> ms;
-	set<pair<ll,ll>, cg> mg;
-	vector<ll> ans = {-1};
-	
-	set<ll> s;
-	vector<ll> d(n + 1, 0), p(n+1, 0);
-	map<ll, ll> last_pos;
-	for (ll i = n - 1; i >= 0; i--) {
-		s.insert(a[i]);
-		d[i] = s.size();
-		if (last_pos.find(a[i]) == last_pos.end()) {
-			last_pos[a[i]] = i;
-		}
+	set<ll> uq;
+	for (ll i = n; i >= 1; i--) {
+		uq.insert(a[i]);
+		d[i] = uq.size();
 	}
-	ll L = s.size();
+	Lsegtree<ll, ll> seg(n + 2, 0, 0);
 	
+	auto getd = [&] (ll i) {
+		return d[i] + seg.query(i, i);
+	};
+	auto dbgd = [&] () {
+			for (ll i = 1; i <= n; i++) {
+				cout << d[i] + seg.query(i, i) << " ";
+			}
+			cout << "\n";
+	};
+	multiset<ll> s;
+	ll l = 0, r = 0;
 	
-	ll ai = 1, l = L;
+	vector<ll> fans;
 	set<ll> seen;
 	
-	for (ll i = 0; i < n; i++) {			
-		
-		if (i) p[i] = p[i] +  p[i-1];
-		dbg(i, d, l, ans, ms, mg, p, d[i], p[i]);
-		if (seen.find(a[i]) != seen.end()) {
-			dbg("continue");
-			continue;
-		}
-		dbg(l, d[i] + p[i]);
-		if (i == 5 && l == 2 && l == d[i] + p[i]) {
-			cout << "Yeaaaaaaaaaah" << '\n';
-			exit(0);
-		}
-		if (l == d[i] + p[i]) {
-			cout << "entered\n";
-			if (i == 5) exit(0);
-			dbg("entered");
-			ms.insert({a[i], i});
-			mg.insert({a[i], i});
-		}
-		else {
-			assert(l > d[i] + p[i]);
-			pair<ll, ll> f;
-			if (ai & 1) {
-				f = *mg.begin();
-			} else {
-				f = *ms.begin();
-			}
-			for (ll i = ans.back() + 1; i <= f.second; i++) {
-				ms.erase({a[i], i});
-				mg.erase({a[i], i});
-			}
-			ans.pb(f.second);
-			seen.insert(f.first);
-			
-			
-			ai++;
-			l--;
-			// update p[i]
-			if (last_pos[f.first] > i) { 
-				dbg(f, i);
-				p[i] += -1;
-				p[last_pos[f.first]] += 1;
-			}
-			i--;
-		}
-		
-	}
+	dbg(a, d);
+	ll max_uniq = d[1];
 	
-	if (true) {
-		pair<ll, ll> f;
-		while (true) {
-			if (ai&1) {
-				f = *mg.begin();
-			} else {
-				f = *ms.begin();
-			}
-			
-			if (seen.count(f.first) > 0) {
-				if (!mg.empty())
-					mg.erase(mg.begin());
-				if (!ms.empty())
-					ms.erase(ms.begin());
-				continue;
-			} else {
-				break;
-			}
+	for (ll reqd = max_uniq, cnt = 1; reqd >= 1; reqd--, cnt++)
+	{
+		dbg(fans);
+		//~ dbgd();
+		while (r + 1 <= n && getd(r + 1) == reqd)
+		{
+			r++;
+			if (seen.count(a[r])) continue;
+			s.insert(a[r]);
 		}
-		dbg(mg, ms);	
-		ans.pb(f.second);
-		dbg(f);
-	}
-	vector<ll> fans;
-	for (ll i = 1; i < ans.size(); i++) {
-		fans.pb(a[ans[i]]);
+		dbg(reqd, r);
+			
+		dbg(s);
+		
+		ll max_s = *s.rbegin();
+		ll min_s = *s.begin();
+			
+		dbg(max_s, min_s, l);
+		
+		if (cnt & 1) {
+			while (a[l + 1] != max_s) {
+				l++;
+				if (seen.count(a[l])) continue;
+				s.erase(s.find(a[l]));
+			}
+			l++;
+			dbg(l);
+			seg.update(l, lp[max_s], -1);
+			assert(a[l] == max_s);
+			fans.push_back(max_s);
+			seen.insert(max_s);
+			s.erase(a[l]);
+		} else {
+			while (a[l + 1] != min_s) {
+				l++;
+				if (seen.count(a[l])) continue;
+				s.erase(s.find(a[l]));
+			}
+			l++;
+			dbg("min", l, lp[min_s]);
+			//~ dbgd();
+			seg.update(l, lp[min_s], -1);
+			//~ dbgd();
+			assert(a[l] == min_s);
+			fans.push_back(min_s);
+			seen.insert(min_s);
+			s.erase(a[l]);
+		}
 	}
 	
 	return fans;
 }
 
 int main() {
-	//~ test();
-	//~ return 0;
-	
-    int t;
-    cin >> t;
-    for (ll tc = 1; tc <= t; tc++) {
-		ll n;
-		cin >> n;
-		vector<ll> a(n);
-		for (ll i = 0; i < n; i++)
-			cin >> a[i];
-		auto res = solve(n, a);
-		for (auto & x : res)
+	ios_base::sync_with_stdio(0);cin.tie(0);       
+
+    ll T;
+    T = 1;
+    //~ cin >> T;
+    for (ll tc = 1; tc <= T; tc++) {
+        auto res = solve();
+        cout << (ll) res.size() << '\n';
+        for (auto&x : res) {
 			cout << x << " ";
-		cout << "\n";
+		}	cout << "\n";
     }
+    return 0;
 }
