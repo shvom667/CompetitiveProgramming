@@ -713,7 +713,6 @@ void solve() {
 }
 
 signed main() {
-
     i32 t;
     t = 1;
     cin >> t;
