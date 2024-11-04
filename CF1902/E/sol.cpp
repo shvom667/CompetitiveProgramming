@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-using ll=int;
+using ll=long long;
 #define pb push_back
 template <typename T>
 using Vec = vector<T>;
@@ -15,9 +15,21 @@ using Vec = vector<T>;
  
 const ll M1 = 1000000321;
 const ll M2 = (int) ((1ll << 31) - 1);
-ll P1, P2;
+ll P1, P2, X1, X2;
 
-
+ll get_hash(string s) {
+	ll v1, v2;
+	v1 = v2  = 0;
+	for (ll j = 0; j < SZ(s); j++) {
+		v1 = v1 * P1 + (ll)s[j];
+		v1 %= M1;
+		v2 = v2 * P2 + (ll)s[j];
+		v2 %= M2;
+		string a = to_string(v1);
+		a += to_string(v2);
+	}
+	return v1 + v2 ^ 923324;
+}
 
 string S(string a, string b) {
     // dbg(a, b);
@@ -54,7 +66,18 @@ ll rnd(ll x, ll y) {
   return uniform_int_distribution<ll>(x, y)(rng);
 }
 
-unordered_map<string, ll> mp;
+ll pi (ll k1, ll k2) {
+	ll fans = 0;
+	fans = k2;
+	fans += (k1 + k2) * (k1 + k2 + 1) / 2;
+	return fans;
+}
+
+ll Szudzik(ll a, ll b) {
+	return a >= b ? a * a + a + b : a + b * b;
+}
+
+unordered_map<ll, ll> mp;
 
 void init() {
   ll L, R;
@@ -62,6 +85,8 @@ void init() {
   R = 1e9 + 10;
   P1 = rnd(L, R) * 2 + 1;
   P2=  rnd(L, R) * 2 + 1;
+  X1 = rnd(1e5 , 1e12);
+  X2 = rnd(1e5, 1e12);
 }
 
 auto solve() {
@@ -86,10 +111,7 @@ auto solve() {
             v1 %= M1;
             v2 = v2 * P2 + (ll)s[i][j];
             v2 %= M2;
-            dbg(v1, v2);
-            string a = to_string(v1);
-            a += to_string(v2);
-            mp[a]++;
+            mp[Szudzik(v1, v2)]++;
         }
     }
   }
@@ -104,16 +126,11 @@ auto solve() {
             v1 %= M1;
             v2 = v2 * P2 + (ll)r[i][j];
             v2 %= M2;
-            // mp[{v1, v2}]++;
-            dbg(v1, v2);
-            string a = to_string(v1);
-            a += to_string(v2);
 
-            fans += mp[a];
+            fans += mp[Szudzik(v1, v2)];
         }
     }
   } 
-  dbg(2 * n * tot_len);
   return 2 * n * tot_len - 2 * fans;
 }
 
