@@ -4,6 +4,8 @@ using ll=long long;
 #define pb push_back
 template <typename T>
 using Vec = vector<T>;
+
+
 // #define ONLINE_JUDGE
 #ifndef ONLINE_JUDGE
     #include"/home/shivom/Downloads/CP/DataStructures/debug.cpp"
@@ -69,6 +71,8 @@ ll gcd(ll x, ll y) {
     if (min(x, y) == 0) return max(x, y);
     return __gcd(x, y);
 }
+    
+ll dp[M][M][M];
 
 void init() {
     C[0][0] = 1;
@@ -87,42 +91,79 @@ void init() {
         F[i] = F[i - 1] * i;
     }
 
-}
+    dp[0][0][0] = 1;
+    dp[1][0][0] = 1;
+    dp[1][1][0] = 1;
 
-void solve() {
-    ll N, M, P;
-    cin >> N >> M >> P;
-
-    ll dpn[N + 1][P + 1];
-    ll dpd[N + 1][P + 1];
-
-    for (ll i = 1; i <= N; i++) {
-        for (ll j = 1; j < i; j++) {
-            dpn[i][j] = 0;
+    for (ll i = 2; i < M; i++) {
+        for (ll p = 0; p <= i; p++) {
+            for (ll s = 0; s + p <= i; s++) {
+                if (p >= s) {
+                    dp[i][p][s] += dp[i-1][p][s];
+                    dp[i][p][s] += dp[i-1][p][s-1] * (p - s + 1);
+                    if (p >= s + 1) {
+                        dp[i][p][s] += dp[i - 1][p - 1][s];
+                    }
+                }
+            }
         }
     }
 
-    dpn[1][1] = 2;
-    dpd[1][1] = M;
-    ll g = gcd(dpn[1][1], dpd[1][1]);
+    // for (ll i = 1; i <= 5; i++) {
+    //     for (ll p = 1; p <= 5; p++) {
+    //         for (ll s = 1; s <= 5; s++) {
+    //             dbg(i,p,s,dp[i][p][s]);
+    //         }
+    //     }
+    // }
+}
 
-    dpn[1][1] /= g;
-    dpd[1][1] /= g;
 
 
-    for (ll i = 1; i <= N; i++) {
+void solve() {
+    ll N, M, P;
+    
+    cin >> M >> N >> P;
 
+    if (P == 0) {
+        if (N == 0) {
+            cout << "1/1" << "\n";
+        } else {
+            cout << "0/1" << "\n";
+        }
+        return;
     }
 
+    ll num = 0;
+
+    for (ll s = 0; s <= N - 1; s++) {
+        dbg(P-1, N-1, s, dp[P-1][N-1][s]);
+        num += dp[P - 1][N - 1][s] * C[M - P][N  - s] * F[N - s];
+    }
+
+    ll den = ( C[M][2 * N] * F[2 * N] / F[N] ) / (1ll<<N);
+
+    ll g = gcd(num, den);
+
+
+    dbg(M, N, P);
+    dbg(num, den);
+
+    num /= g;
+    den /= g;
+
+
+    dbg(num, den);
+
+    cout << num << "/" << den << "\n";
 }   
 
 int main() {
 	ios_base::sync_with_stdio(0);cin.tie(0);       
 
     ll T;
-    cin >> T;
+    T = 1;
     init();
-    exit(0);
     for (ll tc = 1; tc <= T; tc++) {
         solve();
         // auto res = solve();

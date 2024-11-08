@@ -1,0 +1,9 @@
+# Problem configuration
+source: 2021 ICPC East-Central NA Regional Contest
+author: ECNA Judging Team
+license: cc by-sa
+rights_owner: ECNA
+name: Gambling Game
+
+limits:
+    time_multiplier: 2

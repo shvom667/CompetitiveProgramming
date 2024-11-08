@@ -1,0 +1,2 @@
+INT(2,33,m) SPACE INT(0,m/2,n) SPACE INT(0,m,p) NEWLINE EOF
+
