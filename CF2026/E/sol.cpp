@@ -1,79 +1,60 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-using ll=long long;
-#define pb push_back
-template <typename T>
-using Vec = vector<T>;
- 
-#ifndef ONLINE_JUDGE
-    #include"/home/shivom/Downloads/CP/DataStructures/debug.cpp"
-#else
-    #define dbg(...) 42
-#endif
+#define int long long
 
+int n, k;
+vector<vector<int>> g;
+vector<int> mt;
+vector<bool> used;
 
-mt19937 rng((int) std::chrono::steady_clock::now().time_since_epoch().count());
-int rnd(int x, int y) {
-  return uniform_int_distribution<int>(x, y)(rng);
+bool try_kuhn(int v) {
+    if (used[v])
+        return false;
+    used[v] = true;
+    for (int to : g[v]) {
+        if (mt[to] == -1 || try_kuhn(mt[to])) {
+            mt[to] = v;
+            return true;
+        }
+    }
+    return false;
 }
 
-/* Hints
-    maximum-matching
-    Hopcroft-Karp algorithm
-*/
+signed main() {
+    //... reading the graph ...
 
-auto solve(ll n, vector<ll> a) {
-    sort(begin(a), end(a));
-    ll fans = 0;
-    for (int sh = 0; sh <= 100; sh++) {
-        for (int i = 0; i < n; i++) {
-            for (int j = i; j < n; j++) {
-                ll o = 0;
-                for (ll k = i; k <= j; k++) {
-                    o |= a[k];
-                }
-                fans = max(fans, j - i + 1 - (ll)__builtin_popcount(o));
+    int tt;
+    cin >> tt;
+    while (tt--) {
+
+        int N; cin >> N; int A[N]; for (int i = 0; i < N; i++) cin >> A[i];
+
+        n = 60 + N;
+        g = vector<vector<int>> (n);
+        k = 0;
+
+        for (int i = 0; i < N; i++) {
+            for (int b = 0; b < 60; b++) {
+                if ((A[i] && (1ll << b)) == 0) continue;
+                g[b].push_back(i);
+                g[i].push_back(b);
+                k++;
             }
         }
-        shuffle(begin(a), end(a), rng);
-    }
 
-    return fans;
-}
-
-auto bf(ll n, vector<ll> a) {
-
-    ll fans = 0;
-    for (ll i = 0; i < (1ll << n); i++) {
-        ll ans = 0;
-        for (ll bit = 0; bit < n; bit++) {
-            if (i & (1ll << bit)) {
-                ans |= a[bit];
+        mt.assign(k, -1);
+        for (int v = 0; v < n; ++v) {
+            used.assign(n, false);
+            try_kuhn(v);
+        }
+        int cnt = 0;
+        for (int i = 0; i < k; ++i)
+            if (mt[i] != -1) {
+                printf("%d %d\n", mt[i] + 1, i + 1);
+                cnt++;
             }
-        }
-        fans = max(fans, (ll)__builtin_popcount(i)-(ll) __builtin_popcount(ans));
-    }
-    return fans;
-}
 
-int main() {
-	ios_base::sync_with_stdio(0);cin.tie(0);       
-
-    ll T;
-    T = 1;
-    for (ll tc = 1; tc <= T; tc++) {
-        ll n;
-        cin >> n;
-        vector<ll> a(n);
-        for (ll i = 0; i < n; i++) {
-            cin >> a[i];
-        }
-        ll res;
-        if (n >  15)
-            res = solve(n , a);
-        else
-            res = bf(n, a); 
-        cout << res << "\n";
+        cout << cnt << "\n";
+        g.clear();
     }
-    return 0;
 }
