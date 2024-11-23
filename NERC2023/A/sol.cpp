@@ -14,28 +14,27 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
-    ll n; cin >> n; vector<ll> a(n + 1);
-    bool ok = true;
-    ll cnt = 0;
-    for (ll i = 1; i <= n; i++) {
-        cin >> a[i];
-        if (ok)
-            ok = (a[i] == i);
-        cnt += a[i] == i;
+    ll a[4];
+    for (ll i = 0; i < 4; i++) cin >> a[i];
+    sort(a, a + 4);
+    ll fans = 0;
+    for (ll j = 0; j < 3; j++) {
+        vector<ll> x;
+        for (ll k = 0; k < 3; k++) {
+            if (k != j)
+                x.pb(a[k]);
+        }
+        fans = a[j] * (min(x[0], x[1]));
     }
-    if (ok) 
-        return n;
-    if (cnt) {
-        return n - 1;
-    }
-    return n - 2;
+
+    return fans;
 }
 
 int main() {
 	ios_base::sync_with_stdio(0);cin.tie(0);       
 
     ll T;
-    cin >> T;
+    T = 1;
     for (ll tc = 1; tc <= T; tc++) {
         auto res = solve();
         cout << res << "\n";

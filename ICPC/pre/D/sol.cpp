@@ -39,10 +39,10 @@ auto bf() {
 
     P[2] = 4;
     for (ll i = 3; i <= 27; i++) {
-        P[i] = P[i - 1] * 4;
+        P[i] = 2 * P[i - 1] + (1ll << i);
     }
     
-
+    dbg(P);
 
     dbg(P);
     dp[0][0] = 1;
@@ -54,6 +54,7 @@ auto bf() {
             if (4*i - P[p2] < 0) continue;
             for (ll p3 = 0; p3 <= p2; p3++){
                 if ((4 * i - P[p2]) % 4 != 0) continue;
+                if (!((4*i - P[p2])/4 >= 0 && (4*i - P[p2])/4 < N)) continue;
                 dp[i][p2] += dp[(4*i - P[p2])/4][p3];
                 dp[i][p2] %= M;
             }
