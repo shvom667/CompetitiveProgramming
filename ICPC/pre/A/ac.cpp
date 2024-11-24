@@ -12,8 +12,19 @@ using Vec = vector<T>;
     #define dbg(...) 42
     #define rnd(...) 42
 #endif
- 
+
+const ll N = 1e5;
 auto solve() {
+    vector<bool> dp(N, false);
+    dp[0] = true;
+    dp[1] = true;
+
+    for (ll i = 2; i <= n; i++) {
+        for (ll j = 1; j <= sqrtl(i); j++) {
+            dp[i] = ;
+        }
+    }
+
     return 0;
 }
 

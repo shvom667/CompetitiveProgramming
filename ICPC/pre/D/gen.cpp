@@ -10,10 +10,5 @@ int main(int argc, char** argv) {
     auto rnd = [&] (ll a, ll b) {
         return a + rng() % (b - a + 1);
     };
-
-    cout << 1e6 -1 << "\n";
-    for (ll i = 2; i <= 1e6; i++) {
-        cout << i << "\n";
-    }
     return 0;
 }

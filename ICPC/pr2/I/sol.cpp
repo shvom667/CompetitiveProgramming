@@ -5,7 +5,7 @@ using ll=long long;
 template <typename T>
 using Vec = vector<T>;
  
-#ifndef ONLINE_JUDGE
+#ifdef SHIVOM
     #include"/home/shivom/Downloads/CP/DataStructures/debug.cpp"
     #include"/home/shivom/Downloads/CP/DataStructures/random_gen.cpp"
 #else
@@ -14,6 +14,7 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
+    
     return 0;
 }
 
@@ -28,3 +29,4 @@ int main() {
     }
     return 0;
 }
+
