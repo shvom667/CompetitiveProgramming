@@ -319,8 +319,59 @@ void __print(Mint x){
 }
 // ============
 auto solve() {
-    Mint v = 1; v /= 2;
-    dbg(v);
+    
+    ll n; cin >> n;
+    vector<vector<ll>> adj(n + 1);
+    for (ll i = 1; i < n; i++) {
+        ll x, y; cin >> x >> y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    vector<Mint>ans(n+1,0);ans[1]=1;
+    vector<ll> depth(n+1,0);
+    function<void(ll, ll)>dfs=[&](ll i, ll p)  {
+        for(auto&ch:adj[i]){
+            if(ch!=p){
+                depth[ch]=depth[i]+1;
+                dfs(ch,i);
+            }
+        }
+    };
+    vector<ll>minChild(n+1,1e9);
+    function<void(ll, ll)>dfs2=[&](ll i, ll p)  {
+        for(auto&ch:adj[i]){
+            if(ch!=p){
+                dfs2(ch,i);
+                minChild[i]=min(minChild[i],minChild[ch]);
+            }
+        }
+        if(minChild[i]==1e9)
+            minChild[i]=min(minChild[i],depth[i]);
+    };
+
+    dfs(1,-1);
+    dfs2(1,-1);
+    dbg(depth);
+    dbg(minChild);
+    function<void(ll, ll)>dfs3=[&](ll i, ll p)  {
+        if(minChild[i]==depth[i] || i==1){
+            dbg(i);
+        }else{
+            ans[i]=ans[p];
+            ans[i]-= ans[i]/(minChild[i]-depth[i]+1);
+        }
+        // dbg(i);
+        for(auto&ch:adj[i]){
+            if(ch!=p){
+                dfs3(ch,i);
+            }
+        }
+    };
+
+    dfs3(1,-1);
+    for(ll i=1;i<=n;i++){
+        cout<<ans[i]<<" ";
+    }   cout<<'\n';
     return 0;
 }
 
@@ -331,7 +382,7 @@ int main() {
     cin >> T;
     for (ll tc = 1; tc <= T; tc++) {
         auto res = solve();
-        cout << res << "\n";
+        // cout << res << "\n";
     }
     return 0;
 }
