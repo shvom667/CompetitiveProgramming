@@ -46,9 +46,12 @@ auto solve() {
     }
 
     if (ich == -1) {
-        return n - 1;
+        cout<< n - 1<<'\n';
+        return;
     }
+
     string b = "";
+
     for (ll i = ich; i < n; i++) {
         b += s[i];
     }
@@ -61,7 +64,7 @@ auto solve() {
     dbg(Z);
     dbg(sz);
     auto same_hash = [&] (ll a, ll b) {
-        dbg(a, b);
+        assert(b< n);
         return Z[sz + a] >= b - a + 1;
     };
 
@@ -111,23 +114,20 @@ auto solve() {
             if (i + len - 1 >= n) {
                 break;
             }
-            // dbg(ich, ich + len - 1, i, i + len - 1);
             if (!same_hash(i, i + len - 1)) {
                 
                 break;
             }
-            // dbg(len, i);
             if (i + len - 1 == n - 1) {
                 ok = true;
                 
             }
         }
         if (ok) {
-            dbg(len, pmin + 1);
             fans += pmin + 1;
         }
     }
-    return fans;
+    cout << fans <<'\n';
 }
 
 int main() {
@@ -137,8 +137,7 @@ int main() {
     T = 1;
     cin >> T;
     for (ll tc = 1; tc <= T; tc++) {
-        auto res = solve();
-        cout << res << "\n";
+        solve();
     }
     return 0;
 }
