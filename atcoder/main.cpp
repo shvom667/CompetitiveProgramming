@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include <atcoder/scc>
+#include <atcoder/modint>
 using namespace std;
 using ll = long long;
 #define pb push_back

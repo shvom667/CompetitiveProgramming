@@ -544,6 +544,7 @@ using is_dynamic_modint_t = std::enable_if_t<is_dynamic_modint<T>::value>;
 }  // namespace atcoder
 
 using namespace std;
+using namespace atcoder;
 using ll = long long;
 #define pb push_back
 template <typename T>
@@ -551,7 +552,7 @@ using Vec = vector<T>;
 
 void solve()
 {
-  
+    
 }
 
 int main() {
