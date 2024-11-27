@@ -12,8 +12,19 @@ using Vec = vector<T>;
     #define dbg(...) 42
     #define rnd(...) 42
 #endif
- 
+
 auto solve() {
+    ll n;cin>>n;
+    vector<ll> a(n),b(n);
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
+    }
+    for(ll i=0;i<n;i++){
+        cin>>b[i];
+    }
+    dbg(n);
+    dbg(a);
+    dbg(b);
     return 0;
 }
 
@@ -21,7 +32,7 @@ int main() {
 	ios_base::sync_with_stdio(0);cin.tie(0);       
 
     ll T;
-    cin >> T;
+    T=1;
     for (ll tc = 1; tc <= T; tc++) {
         auto res = solve();
         cout << res << "\n";
