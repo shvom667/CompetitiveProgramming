@@ -338,7 +338,7 @@ auto solve() {
     for(ll y=1;y<=n;y++){
         for(ll x=1;x<=n;x++){
             fans += T.choose(n,x)
-                *T.choose(n,x)
+                *T.choose(n,x)  
                 *T.choose(n,y)
                 *T.choose(n,y)
                 *T.fact(x)
