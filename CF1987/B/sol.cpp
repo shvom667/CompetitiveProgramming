@@ -14,7 +14,20 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
-    return 0;
+    ll n;cin>>n; ll a[n];
+    ll sq=0;
+    ll pmax=0,fans=0;
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
+        if(a[i]>pmax){pmax=a[i];continue;}
+        ll cm=pmax-a[i];
+        ll csq=max(sq,pmax-a[i]);
+        fans += max(0ll,csq-sq);
+        fans += pmax-a[i];
+        sq=max(csq,sq);
+        pmax=max(pmax,a[i]);
+    }
+    return fans;
 }
 
 int main() {

@@ -319,7 +319,6 @@ FactorialTable<Mint>T(N);
 // ============
 auto solve() {
     ll n;cin>>n;
-    Mint fans;
     
     // auto f = [&] (ll k) {
     //     Mint tot = 0;
@@ -334,17 +333,14 @@ auto solve() {
     // for(ll i=1;i<=20;i++){
     //     cout<<f(i)<<" ";
     // }   cout<<'\n';
-
-    for(ll y=1;y<=n;y++){
-        for(ll x=1;x<=n;x++){
-            fans += T.choose(n,x)
-                *T.choose(n,x)  
-                *T.choose(n,y)
-                *T.choose(n,y)
-                *T.fact(x)
-                *T.fact(y)
-                *T.fact(3*n-x-y);
-        }
+    Mint fans;
+    for(ll i=0;i<=n;i++){
+        fans += T.choose(n, n - i)
+            *T.choose(n, i)
+            *T.choose(2 * n - i, n)
+            *T.fact(n)
+            *T.fact(n)
+            *T.fact(n);
     }
     cout<<fans<<'\n';
     return 0;
@@ -356,7 +352,7 @@ int main() {
     ll T;T=1;
     for (ll tc = 1; tc <= T; tc++) {
         auto res = solve();
-        cout << res << "\n";
+        // cout << res << "\n";
     }
     return 0;
 }

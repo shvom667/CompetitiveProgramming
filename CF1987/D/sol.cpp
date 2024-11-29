@@ -14,7 +14,47 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
-    return 0;
+    ll n; cin>> n;
+    map<ll, ll> mp;
+    while(n--){
+        ll x;cin>>x;
+        mp[x]++;
+    }
+    vector<ll> a;
+    for(auto&[u,v]:mp){
+        // dbg(u,v);
+        a.pb(v);
+    }
+    n = a.size();
+    dbg(a);
+    const ll INF = 1e10;
+    vector<Vec<ll>> dp(n, Vec<ll> (n + 1, INF));
+
+    for (ll i = 0; i < n; i++) {
+        dp[i][0] = 0;
+    }
+    for (ll i = 1; i < n; i++) {
+        for (ll k = 1; k <= n; k++) {
+            dp[i][k] = min(dp[i - 1][k], dp[i][k]);
+            dp[i][k] = min(dp[i - 1][k - 1] + 1 + a[i], dp[i][k]);
+            if (dp[i][k] <= i+1) {
+
+            } else {
+                dp[i][k] = INF;
+            }
+        }
+    }
+    ll take=0;
+    for (ll i = 0; i <= n; i++) {
+        if (dp[n-1][i] < INF) {
+            take=i;
+        }
+    }
+
+    ll res= n-take;
+    // res = min(res, (n+1)/2);
+
+    return res;
 }
 
 int main() {

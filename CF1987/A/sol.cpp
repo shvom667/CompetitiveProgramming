@@ -14,7 +14,8 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
-    return 0;
+    ll n,k;cin>>n>>k;
+    return (n-1)*k+1;
 }
 
 int main() {

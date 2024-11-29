@@ -14,7 +14,22 @@ using Vec = vector<T>;
 #endif
  
 auto solve() {
-    return 0;
+    ll n;
+    cin >> n;
+    vector<ll> v(n), a(n, 0);
+    for (ll i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+    ll fans = 0;
+    a[n - 1] = v[ n - 1];
+    for (ll i = n - 2; i >= 0; i--) {
+        if (v[i] > v[i + 1]) {
+            a[i] = max(v[i], a[i + 1] + 1);
+        } else {
+            a[i] = 1 + a[i + 1];
+        }
+    }
+    return a[0];
 }
 
 int main() {
