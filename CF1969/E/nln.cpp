@@ -12,15 +12,8 @@ template <typename T> using Vec = vector<T>;
 #define dbg(...) 42
 #endif
 
-/*
-  Cool Problem
-  segment tree
-    -> node --  sum on range, min suffix sum on that range
-    -> 
-*/
-
 // ============
-
+const ll INF = 1e9;
 template<class T, class U>
 // T -> node, U->update.
 struct Lsegtree {
@@ -38,10 +31,7 @@ struct Lsegtree {
 	}
 	T combine(T l, T r) {
 		// change this function as required.
-		// T ans = (l + r);
-    T ans;
-    ans.first = l.first + r.first;
-    ans.second = min(r.second, r.first + l.second);
+		T ans = min(l, r);
 		return ans;
 	}
 	void buildUtil(ll v, ll tl, ll tr, vector<T>&a) {
@@ -56,11 +46,7 @@ struct Lsegtree {
 	}
 	// change the following 2 functions, and you're more or less done.
 	T apply(T curr, U upd, ll tl, ll tr) {
-    // dbg(tl,tr);
-    assert(tl==tr);
-		T ans = curr;
-    ans.first += (tr-tl+1)*upd;
-    ans.second += (tr-tl+1)*upd;
+		T ans = curr + upd;
 		return ans;
 	}
 	U combineUpdate(U old_upd, U new_upd, ll tl, ll tr) {
@@ -118,53 +104,120 @@ struct Lsegtree {
 		updateUtil(0, 0, n - 1, l, r, upd);
 	}
 };
-const ll INF = 1e9+10;
 
 auto solve() {
   ll n;
   cin >> n;
-  vector<ll> a(n + 1);
-  
-
+  vector<ll> a(n);
   ll fans = 0;
-  for (ll i = 1; i <= n; i++) {
+  for (ll i = 0; i < n; i++) {
     cin >> a[i];
   }
-  Lsegtree<pair<ll, ll>, ll> seg(n + 1, {0,INF}, 0);
-  vector<vector<ll>> I(n + 1, Vec<ll>(2, -1));
-  vector<pair<ll,ll>>dummy(n+1,{0,0});
+  
+  vector<ll> pi(n, -1), ni(n, n);
+  // map<ll, ll> mp1,mp2;
+  vector<ll>mp1(n+1, -1),mp2(n+1,-1);
+  for (ll i = 0; i < n; i++) {
+    if(mp1[a[i]]==-1) {
+      pi[i] = -1;
+    } else {
+      pi[i] = mp1[a[i]];
+    }
+    mp1[a[i]] = i;
+  }
+  for(ll i=n-1;i>=0;i--){
+    if(mp2[a[i]]==-1){
+      ni[i]=n;
+    }else{
+      ni[i]=mp2[a[i]];
+    }
+    mp2[a[i]]=i;
+  }
+
+  vector<pair<ll,pair<ll,ll>>> uq;
+  for(ll i=0;i<n;i++){
+    uq.push_back({pi[i]+1,{ni[i]-1,i}});
+  }
+
+  sort(begin(uq),end(uq),[&](auto x,auto y){
+    return x.first>y.first;
+  });
+  // dbg(uq);
+  // exit(0);
+
+  Lsegtree<ll, ll> seg(n, INF, 0);
+  vector<ll> dummy(n, 0);
   seg.build(dummy);
 
-  ll pp = -1;
-  ll cnt = 0;
-  for (ll i = 1; i <= n; i++) {
-    if (I[a[i]][0] == -1) { // no previous occurance
-    dbg(i,i,i);
-      seg.update(i,i,1);
-      I[a[i]][0] = i;
-    }   
-    else if (I[a[i]][0] != -1 && I[a[i]][1] == -1) { // a single previous occurance was there
-      seg.update(i,i,1);
-      seg.update(I[a[i]][0],I[a[i]][0], -2); 
-      I[a[i]][1] = I[a[i]][0];
-      I[a[i]][0] = i;
+  vector<vector<pair<ll,ll>>> er(n);
+  vector<ll>w(n,n);
+
+  for(ll i=0;i<n;i++){
+    while(!uq.empty() && uq.back().first <= i) {
+      auto p=uq.back();
+      uq.pop_back();
+      seg.update(p.second.second,p.second.first, 1);
+      er[p.second.second].push_back({p.second.second,p.second.first});
     }
-    else if (I[a[i]][0] != -1 && I[a[i]][1] != -1) { // two previous occurances were there
-      seg.update(i,i,1);
-      seg.update(I[a[i]][0],I[a[i]][0],-2);
-      seg.update(I[a[i]][1],I[a[i]][1],1);  
-      I[a[i]][1] = I[a[i]][0];
-      I[a[i]][0] = i;
+    
+    if(seg.query(i,n-1)>0){
+      w[i]=n;
+    }else{
+      ll L=i+1,R=n-1;
+      auto cond=[&](ll mid){
+        return seg.query(i,mid)==0;
+      };
+      while(L<=R){
+        ll mid=L+(R-L)/2;
+        if(cond(mid)) {
+          R=mid-1;
+        }else{
+          L=mid+1;
+        }
+      }
+      w[i]=L;
     }
-    if(seg.query(pp+1,i).second==0){
-      pp=i;
-      cnt++;
+
+    for(auto&[x,y]:er[i]){
+      seg.update(x,y,-1);
     }
-    // for(ll j=1;j<=i;j++){
-    //   cout<<seg.query(j,i).first<<"_"<<seg.query(j,i).second<<' ';
-    // } cout<<'\n';
   }
-  return cnt;
+  
+  priority_queue<pair<ll, ll>, vector<pair<ll, ll>>, greater<pair<ll, ll>>> pq;
+  
+
+  for(ll i=0;i<n;i++){
+    if(w[i]<n){
+      pq.push({w[i]-i+1,i});
+    }
+  }
+  
+  vector<pair<ll, ll>> found;
+  while (!pq.empty()) {
+    auto t = pq.top();
+    pq.pop();
+    bool seen = false;
+    for (auto &[u, v] : found) {
+      if (t.second <= u && t.second + t.first - 1 >= v) {
+        seen = true;
+      }
+    }
+    if (!seen) {
+      found.push_back({t.second, t.first + t.second - 1});
+    }
+  }
+  dbg(found);
+  ll lc = -1;
+  sort(begin(found), end(found),
+       [&](auto x, auto y) { return x.first < y.first; });
+  for (auto &[u, v] : found) {
+    if (lc >= u)
+      continue;
+    lc = v;
+    dbg(u, v, lc);
+    fans++;
+  }
+  return fans;
 }
 
 int main() {
