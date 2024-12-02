@@ -28,3 +28,28 @@ int main() {
   }
   return 0;
 }
+/*
+Hard
+[i][K] -> K is total number of good substrings
+[i-1][Kd] -> (K - Kd) good substrings ending at index i
+
+[i][c][K] -> index i, char c, total good substring K
+
+[n][c][Kd]
+K<=Kd<=max
+'A'<=c<='B'
+
+000
+001
+010
+011
+100
+101
+110
+111
+
+These are various type of substrings
+We have to figure out their solutions
+
+Looked at the editorial looser
+*/

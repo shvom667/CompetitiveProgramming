@@ -12,9 +12,7 @@ template <typename T> using Vec = vector<T>;
 #define rnd(...) 42
 #endif
 
-auto solve() {
-  return 0;
-}
+auto solve() { return 0; }
 
 int main() {
   ios_base::sync_with_stdio(0);

@@ -12,8 +12,16 @@ template <typename T> using Vec = vector<T>;
 #define rnd(...) 42
 #endif
 
-auto solve() {
-  return 0;
+auto solve() { 
+  ll n; cin >> n; ll a[n + 1];
+  for (ll i = 1; i <= n; i++) {
+    a[i] = 2*i - 1;
+  }
+  // a[1] = n;
+  for (ll i = 1; i<=n;i++){
+    cout<<a[i]<<" ";
+  }cout<<'\n';
+  return 0; 
 }
 
 int main() {
@@ -24,7 +32,7 @@ int main() {
   cin >> T;
   for (ll tc = 1; tc <= T; tc++) {
     auto res = solve();
-    cout << res << "\n";
+    // cout << res << "\n";
   }
   return 0;
 }
