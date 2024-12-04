@@ -90,7 +90,6 @@ auto geinus() {
     cout<<u+1<<" "<<v+1<<'\n';
   }
   return fans;
-
 }
 
 
@@ -98,11 +97,50 @@ auto euler() {
   ll n, k;
   cin >> n >> k;
   vector<ll> a(n);
+  vector<ll>q(n);  
   for(ll i=0;i<n;i++){
     cin>>a[i];
+    a[i]--;
+    q[a[i]]=i;
   }
-  ll fans = 0;
+  dbg(q);
+  vector<pair<ll,ll>>F;
+  auto swp=[&](ll x,ll y){
+    dbg(x,y);
+    F.pb({q[x],q[y]});
+    swap(a[q[x]],a[q[y]]);
+    swap(q[x],q[y]);
+  };
+  ll fans=0;
+  for(ll i=1;i<n;i++){
+    vector<ll>r;
+    for(ll j=0;j<i;j++){
+      if(q[j]>=q[i]+k){
+        r.pb(j);
+      }
+    }
+    if(!r.empty()){
+      swp(r.back(),i);
+      fans++;
+      for(ll rr=(ll)r.size()-1;rr>=1;rr--){
+        swp(r[rr],r[rr-1]);
+        fans++;
+      }
+    }
+  }
+  dbg(a);
+  dbg(q);
+  cout << fans << "\n";
+  for(auto&[u,v]:F){
+    cout<<min(u+1,v+1)<<" "<<max(u+1,v+1)<<'\n';
+    // cout<<q[u]+1<<" "<<q[v]+1<<'\n';
+    // cout<<q[u]+1<<" "<<q[v]+1<<"\n";
+    // cout<<a[u]+1<<" "<<a[v]+1<<'\n';
+     // cout<<a[u]+1<<" "<<a[v]+1<<"\n";
+    dbg(u,v);
+  }
 
+  dbg(fans);
   return fans;
 
 }
