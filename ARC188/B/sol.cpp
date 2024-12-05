@@ -14,7 +14,22 @@ using Vec = vector<T>;
 #endif
 
 auto solve() {
-    return 0;
+    ll n, k;
+    cin >> n >> k;
+    if (n & 1) {
+        return "Yes";
+    }
+    if (n <= 3) {
+        return "Yes";
+    }
+    if ((n % 2) == 0 && k == n / 2) {
+        return "No";
+    }
+    
+    if(n%4==0)return "No";
+    
+
+    return "Yes";
 }
 
 int main() {
@@ -24,8 +39,8 @@ int main() {
     ll T;
     cin >> T;
     for (ll tc = 1; tc <= T; tc++) {
-	    auto res = solve();
-	    cout << res << "\n";
+	auto res = solve();
+	cout << res << "\n";
     }
     return 0;
 }

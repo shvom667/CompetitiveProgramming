@@ -14,7 +14,22 @@ using Vec = vector<T>;
 #endif
 
 auto solve() {
-    return 0;
+    ll n, x;
+    cin >> n >> x;
+    vector<ll>a(n);for(ll i=0;i<n;i++)cin>>a[i];
+    vector<ll>b(n);for(ll i=0;i<n;i++)cin>>b[i];
+    vector<ll>v(n);for(ll i=0;i<n;i++)v[i]=a[i]*b[i];
+    sort(begin(v),end(v),greater<ll>());
+    ll sum=0;
+    ll fans=-1;
+    for(ll i=0;i<n;i++){
+        sum+=v[i];
+        if(sum>=x){
+            fans=i+1;
+            break;
+        }
+    }
+    return fans;
 }
 
 int main() {
@@ -24,8 +39,8 @@ int main() {
     ll T;
     cin >> T;
     for (ll tc = 1; tc <= T; tc++) {
-	    auto res = solve();
-	    cout << res << "\n";
+	auto res = solve();
+	cout << res << "\n";
     }
     return 0;
 }
