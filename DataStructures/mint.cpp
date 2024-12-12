@@ -300,4 +300,7 @@ class FactorialTable {
 };
 
 using Mint = ModInt<mod1000000007>;
+void __print(Mint x){
+    cerr<<x;
+}
 // ============

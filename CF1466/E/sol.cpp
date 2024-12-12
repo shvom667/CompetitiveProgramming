@@ -316,11 +316,76 @@ class FactorialTable {
 
 using Mint = ModInt<mod1000000007>;
 // ============
-
+Mint p2[66];
 auto solve() {
     ll n; cin >> n;
     vector<ll> x(n);
-    return 0;
+    for(ll i=0;i<n;i++)cin>>x[i];
+
+
+    Vec<Mint> F(n), G(n);
+
+
+    vector<ll> K(60, 0);
+    for (ll b = 0; b < 60; b++) {
+        for (ll i = 0; i < n; i++) {
+            if (x[i] & (1ll << b)) {
+                K[b]++;
+            }
+        }
+    }
+
+
+    for (ll i = 0; i < n; i++) {
+        for (ll b = 0; b < 60; b++) {
+            ll val;
+            if (x[i] & (1ll << b)) {
+                val = n;
+            } else {
+                val = K[b];
+            }
+            F[i] += ((Mint)(val)) * p2[b];
+        }
+    }
+
+    for (ll i = 0; i < n; i++) {
+        for (ll b = 0; b < 60; b++) {
+            ll val;
+            if (x[i] & (1ll << b)) {
+                val = K[b];
+            } else {
+                val = 0;
+            }
+            G[i] += ((Mint)(val)) * p2[b];
+        }
+    }
+
+    Mint to = 2;
+    Mint fans;
+
+    /*
+    for (ll j = 0; j < n; j++) {
+        for (ll b = 0; b < 60; b++) {
+            for (ll c = 0; c < 60; c++) {
+                fans += to.pow(b) * to.pow(c) * f[j][b] * g[j][c];
+            }
+        }
+    }
+    */
+    for (ll j = 0; j < n; j++) {
+        Mint cur = 0;
+        /*
+        for (ll c = 0; c < 60; c++) {
+            cur += p2[c] * g[j][c];
+        }
+        for (ll b = 0; b < 60; b++) {
+            fans += p2[b] * f[j][b] * cur;
+        }
+        */
+        fans += F[j] * G[j];
+    }
+
+    cout << fans.get_val() << '\n';
 }
 
 auto bf() {
@@ -330,7 +395,7 @@ auto bf() {
 
     ll fans=0;
     for(ll i=0;i<n;i++)for(ll j=0;j<n;j++)for(ll k=0;k<n;k++){
-        fans += (x[i]&x[j]);
+        fans += (x[i]&x[j])*(x[j]|x[k]);
     }
     cout<<fans<<'\n';
     return 0;
@@ -339,12 +404,15 @@ auto bf() {
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
+    p2[0] = 1;
+    for(ll i = 1; i < 66; i++) {
+        p2[i] = 2 * p2[i - 1];
+    }
 
     ll T;
     cin >> T;
     for (ll tc = 1; tc <= T; tc++) {
-	    auto res = bf();
-	    cout << res << "\n";
+        solve();
     }
     return 0;
 }
