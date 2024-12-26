@@ -13,6 +13,7 @@ using Vec = vector<T>;
 #define rnd(...) 42
 #endif
 using ld = long double;
+
 auto solve() {
     ll n;
     cin >> n;
