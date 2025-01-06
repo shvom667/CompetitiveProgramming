@@ -13,6 +13,10 @@ struct SegTree {
     T combine(T a, T b) {
         // put code here
     }
+    T apply(T curr, ll upd) {
+        // put code here
+
+    }
 
     void buildUtil(int l, int r, int v, vector<T>& a) {
       if (r < l)
@@ -49,7 +53,8 @@ struct SegTree {
       if (R < L)
         return;
       if (p == L && p == R) {
-        A[v] = val;
+          // maybe change here?
+        A[v] = apply(A[v], val);
         return;
       } else {
         int mid = (L + R) >> 1;
