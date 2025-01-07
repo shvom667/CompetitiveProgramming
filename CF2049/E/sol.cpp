@@ -15,6 +15,7 @@ using Vec = vector<T>;
 
 auto solve() {
     return 0;
+    ll n, k
 }
 
 int main() {
