@@ -11,8 +11,8 @@ def solve():
 
 def ternary(n):
     if n <= 4:
-        return 3
-    return ternary(n // 4)  + 3
+        return 2
+    return ternary(n // 4)  + 2
 
 
 #position of 1 in 45 queries
