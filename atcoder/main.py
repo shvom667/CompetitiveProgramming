@@ -1,4 +1,6 @@
+
 #include <bits/stdc++.h>
+#include <atcoder/scc>
 
 using namespace std;
 using ll = long long;
@@ -38,11 +40,43 @@ auto solve() {
 	}
 
 	auto good = [&] (auto na, auto nb) {
+		// [0...n-1 n + 0, .. n + m - 1]
+		vector<vector<ll>> G(n + m);
+
+		vector<ll> must;
 
 		for (ll i = 0; i < n; i++) {
 			for (ll j = 0; j < m; j++) {
+				if (nb[i][j] == 0) {
+					G[j + n].pb(i);
+				} else {
+					G[i].pb(j + n);
+				}
 
+				if (na[i][j] != nb[i][j]) {
+					if (nb[i][j] == 0) {
+						must.pb(i);
+					} else {
+						must.pb(j + n);
+					}
+				}
 			}
+		}
+
+		for (auto x : must) {
+			
+			vector<bool> seen(n + m, false);
+			function<void(int)> dfs = [&] (int i) {
+				seen[i] = true;
+				for (auto & ch : G[i]) {
+					if (!seen[ch]) {
+						dfs(ch);
+					}
+				}
+			};
+
+			dfs(x);
+
 		}
 
 		return true;
