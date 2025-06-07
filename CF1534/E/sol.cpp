@@ -14,6 +14,9 @@ using Vec = vector<T>;
 #endif
 
 auto solve() {
+	int a,b,c;
+	cin >> a >> b >> c;
+
     
     return 0;
 }
