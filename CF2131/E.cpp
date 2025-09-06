@@ -14,7 +14,31 @@ using Vec = vector<T>;
 // #endif
 
 auto solve() {
-	return 0;
+	ll n;
+	cin >> n;
+
+	vector<ll> a(n), b(n);
+
+	for (ll i = 0; i < n; i++) cin >> a[i];
+	for (ll i = 0; i < n; i++) {
+		cin >> b[i];
+	}
+	if (a[n - 1] != b[n - 1]) {
+		return "NO";
+	}
+	for (ll i = n - 2; i >=  0; i--) {
+		if (a[i] == b[i]) {
+			continue;
+		}
+		if ((a[i]^a[i + 1]) == (b[i])) {
+			continue;
+		}
+		if ((a[i]^b[i + 1]) == b[i]) {
+			continue;
+		}
+		return "NO";
+	}
+	return "YES";
 }
 
 int main() {

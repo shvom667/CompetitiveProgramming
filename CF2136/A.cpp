@@ -13,8 +13,22 @@ using Vec = vector<T>;
 // #define rnd(...) 42
 // #endif
 
+bool ok1(ll x, ll y) {
+	if (x > y) {
+		swap(x,y);
+	} // x <= y
+
+	return y <= 2 * x + 2;
+}
+
 auto solve() {
-	return 0;
+	ll a, b, c, d;
+	cin >> a >> b >> c >> d;
+
+	if (ok1(a, b) && ok1(c-a,d-b)){
+		return "YES";
+	} 
+	return "NO";
 }
 
 int main() {

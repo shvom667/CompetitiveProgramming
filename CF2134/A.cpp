@@ -14,7 +14,43 @@ using Vec = vector<T>;
 // #endif
 
 auto solve() {
-	return 0;
+	ll n, a, b;
+	cin >> n >> a >> b;
+
+	if (n&1) {
+		if (b >= a) {
+			if (b & 1) {
+				return "YES";
+			} else {
+				return "NO";
+			}
+		} 
+		else {
+			if (b%2==1 && a%2==1){
+				return "YES";
+			}else{
+				return "NO";
+			}
+		}
+
+	}
+
+	if (n % 2 == 0) {
+		if (b >= a) {
+			if (b % 2 == 0) {
+				return "YES";
+			} else{
+				return "NO";
+			}
+		}
+		if (a % 2 == 0 && b % 2 ==0) {
+			return "YES";
+		}else{
+			return "NO";
+		}
+	}
+
+	return "";
 }
 
 int main() {

@@ -14,7 +14,43 @@ using Vec = vector<T>;
 // #endif
 
 auto solve() {
-	return 0;
+	ll n;
+
+	cin >> n;
+
+	vector<vector<ll>> adj(n, vector<ll> ());
+
+	vector<ll> deg(n, 0);
+
+	for (ll i = 0; i < n - 1; i++) {
+		ll u, v;
+		cin >> u >> v;
+		u--;v--;
+		adj[u].pb(v);
+		adj[v].pb(u);
+		deg[u]++;
+		deg[v]++;
+	}
+
+	ll cnt_leaf = 0;
+
+	ll fans=1e18;
+
+	for (ll i = 0; i < n; i++) {
+		if(deg[i] == 1) cnt_leaf++;
+		ll cur_leaf = 0;
+		for (auto x : adj[i]) {
+			if(deg[x] == 1) {
+				cur_leaf++;
+			}
+		}
+		if (deg[i] == 1) cur_leaf++;
+
+		fans=min(fans,-cur_leaf);
+
+	}
+
+	return cnt_leaf+fans;
 }
 
 int main() {

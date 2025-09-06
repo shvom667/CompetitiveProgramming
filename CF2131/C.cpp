@@ -14,7 +14,35 @@ using Vec = vector<T>;
 // #endif
 
 auto solve() {
-	return 0;
+	ll n, k;
+	cin >> n >> k;
+	vector<ll> a(n),b(n);
+	map<int, int> mp;
+	for(ll i=0;i<n;i++){
+		cin >> a[i];
+		if (a[i] % k > (k/2)) {
+			mp[a[i]%k]++;
+		}else{
+			mp[abs((a[i]%k)-k)]++;
+		}
+	}
+		map<int, int> mp2;
+	for(ll i=0;i<n;i++){
+		cin >> b[i];
+		if (b[i] % k > (k/2)) {
+			mp2[b[i]%k]++;
+		}else{
+			mp2[abs((b[i]%k)-k)]++;
+		}
+	}
+
+	for (auto& [u, v]:mp) {
+		if(mp2[u] != v) {
+			return "NO";
+		}
+	}
+
+	return "YES";
 }
 
 int main() {

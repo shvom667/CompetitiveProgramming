@@ -13,8 +13,20 @@ using Vec = vector<T>;
 // #define rnd(...) 42
 // #endif
 
+
 auto solve() {
-	return 0;
+	ll n;
+	cin >> n;
+	vector<ll> a(n);
+	for (ll i = 0; i < n; i++) {
+		cin >> a[i];
+	}
+	sort(begin(a),end(a));
+	ll ans = 0;
+	for (ll i = n - 1; i >= 0; i -= 2) {
+		ans += a[i];
+	}
+	return ans;
 }
 
 int main() {

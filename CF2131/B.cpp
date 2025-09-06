@@ -14,7 +14,31 @@ using Vec = vector<T>;
 // #endif
 
 auto solve() {
-	return 0;
+	ll n;
+	cin >> n;
+	if (n == 2) {
+		cout << "-1 2\n";
+		return;
+	}
+	if (n == 3) {
+		cout << "-1 3 -1\n";
+		return;
+	}
+	vector<ll> fans;
+	for (ll i = 1; i <= n; i++) {
+		if(i&1){
+			fans.pb(-1);
+		}else{
+			fans.pb(3);
+		}
+	}
+	if(n%2==0){
+		fans[n-1]=2;
+	}
+	for(auto x:fans){
+		cout<<x<<' ';
+	}cout<<'\n';
+	return;
 }
 
 int main() {
@@ -24,8 +48,8 @@ int main() {
 	ll T;
 	cin >> T;
 	for (ll tc = 1; tc <= T; tc++) {
-		auto res = solve();
-		cout << res << "\n";
+solve();
+		// cout << res << "\n";
 	}
 	return 0;
 }
