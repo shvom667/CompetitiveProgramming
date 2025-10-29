@@ -94,8 +94,6 @@ int main() {
 	cin >> T;
 	for (ll tc = 1; tc <= T; tc++) {
 		solve();
-		// auto res = solve();
-		// cout << res << "\n";
 	}
 	return 0;
 }

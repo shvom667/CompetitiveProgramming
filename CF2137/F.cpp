@@ -20,7 +20,6 @@
 #include <array>
 #include <climits>
 #include <functional>
-#include <stack>
 
 using namespace std;
 using ll = long long;
@@ -36,54 +35,67 @@ using Vec = vector<T>;
 // #define rnd(...) 42
 // #endif
 
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-int rand(int l, int r) {
-	return uniform_int_distribution<int>(l, r)(rng);
-}
-
-
-int ask(int u, int v) {
-	assert(u != v);
-	cout << u << " " << v << endl;
-	int d;
-	cin >> d;
-	return d;
-}
-
-
-
 auto solve() {
 	ll n;
 	cin >> n;
-
-	vector<int> v;
-	for (int i = 1; i <= n; i++) {
-		v.push_back(i);
+	vector<ll> x(n), y(n);
+	for (ll i = 0; i < n; i++) {
+		cin >> x[i];
+	}
+	for (ll i = 0; i < n; i++) {
+		cin >> y[i];
 	}
 
-	int vector_index = -1;
+	vector<ll> pge(n, -1);
+	
+	deque<ll> d;
+	d.pb(0);
 
-	int d = 0;
+	ll fans = 0;
 
-	while (!d) {
-		vector_index = rand(0, (int)v.size() - 1);
-		int u = v[vector_index];
 
-		for (int i = 0; i < v.size(); i++) {
-			if (i == vector_index) continue;
-			int w = v[i];
-			d = ask(u, w);
-			if (d == 1) {
-				break;
+	if (x[0] == y[0]) {
+		fans += n;
+	}
+	
+
+	for (ll i = 1; i < n; i++) {
+		while (!d.empty() &&  x[d.back()] < x[i]) {
+			d.pop_back();
+		}
+		if (d.empty()) {
+			pge[i] = -1;
+		} else {
+			pge[i] = d.back();
+		}
+
+		if (x[i] == y[i]) {
+			fans += (n - i) * (i + 1);
+		}
+
+		if (true && x[i] != y[i] && d.size() > 0) {
+			ll L, R;
+			L = 0, R = d.size() - 1;
+			auto cond = [&] (int k) {
+				return x[d[k]] >= y[i];
+			};
+			while (L <= R) {
+				ll mid = L + (R - L) / 2;
+				if (cond(mid)) {
+					L = mid + 1;
+				} else {
+					R = mid - 1;
+				}
 			}
+			
+			if (R != -1)
+				fans += (d[R] + 1) * (n - i);
 		}
-		if (d == 1) {
-			break;
-		}
-		v.erase(v.begin() + vector_index);
+
+		d.push_back(i);
 	}
 
-	return 0;
+	cout << fans << '\n';
 }
 
 int main() {
@@ -94,8 +106,6 @@ int main() {
 	cin >> T;
 	for (ll tc = 1; tc <= T; tc++) {
 		solve();
-		// auto res = solve();
-		// cout << res << "\n";
 	}
 	return 0;
 }
