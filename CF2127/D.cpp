@@ -76,6 +76,11 @@ auto solve() {
 
     dbg(parity);
 
+    if (m > n - 1) {
+        fuck = true;
+    }
+
+
 
 
     vector<ll> relation2(n, 0);

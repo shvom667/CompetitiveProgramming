@@ -39,6 +39,7 @@ using Vec = vector<T>;
 
 
 auto solve() {
+	
 }
 
 int main() {

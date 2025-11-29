@@ -39,6 +39,36 @@ using Vec = vector<T>;
 
 
 auto solve() {
+    ll n, m, k;
+    cin >> n >> m >> k;
+
+    vector<ll> ans(n, 0);
+
+
+    ll u = n / (m + 1);
+
+    if (u == 0) {
+        for (ll i = 0; i < n; i++) {
+            cout << ans[i] << " ";
+        }   cout << "\n";
+        return;
+    }
+
+    if (k > u) {
+        for (ll i = 0; i < n; i++) {
+            ans[i] = (i%k);
+        }
+    } else {
+        for (ll i = 0; i < n; i++) {
+            ans[i] = (i%u);
+        }
+    }
+
+
+
+    for (ll i = 0; i < n; i++) {
+        cout << ans[i] << " ";
+    }   cout << "\n";
 }
 
 int main() {
